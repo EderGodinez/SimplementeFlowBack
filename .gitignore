@@ -1,8 +1,8 @@
 # compiled output
 /dist
 /node_modules
-.env
-.gitignore
+*.env
+*.gitignore
 # Logs
 logs
 *.log
