@@ -8,11 +8,26 @@ import { User } from 'src/auth/entities/user.entity';
 @Injectable()
 export class OrdersService {
   constructor(@InjectModel(Order.name)
-              private OrdersModel: Model<Order>){}
+              private OrdersModel: Model<Order>,
+              @InjectModel(User.name) 
+              private UserModel: Model<User>){}
               
   async create(createOrderDto: CreateOrderDto) {
     const newOrder=new this.OrdersModel(createOrderDto);
-    console.log(newOrder.UserId)
+    // Realizar la agregación para buscar si el usuario ingresado existe
+    const searchUser = await this.UserModel.aggregate([
+      {
+          $match: { _id: newOrder.UserId } ,// Puedes ajustar esto según tu lógica
+      },
+      {
+        $project:{ _id: 1}
+      }
+  ]).exec();
+  //VALIDA SI EL USUARIO EXISTE DENTRO DE NUESTRA COLECCION DE USUARIOS
+    if(searchUser.length==0){
+      return {message:'UserID not exist try to type a correct one'}
+    }
+    
     newOrder.id=await this.IncreaseId()+1;
     newOrder.Details.forEach(element => {
       element.Total=element.Amount*element.Price;

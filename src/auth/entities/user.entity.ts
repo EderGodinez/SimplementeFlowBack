@@ -1,7 +1,5 @@
 import { Prop, SchemaFactory,Schema } from "@nestjs/mongoose";
 import { Address } from "./address.entity";
-import { Orders } from './orders.entity';
-
 
 @Schema()
 export class User{
@@ -24,8 +22,6 @@ export class User{
     isActive:boolean;
     @Prop({default:'Client'})
     UserRole:string;
-    @Prop({default:[{product_id:'',amount:0}]})
-    orders:Orders[];
     @Prop({type:[String],default:[]})
     likes:string[];
     @Prop({type:[String],default:[]})

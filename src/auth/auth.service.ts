@@ -39,13 +39,13 @@ export class AuthService {
     }
   }
 
-  //  async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
-  //   const user=await this.create();
-  //   return{
-  //     User:user,
-  //     token:this.getJWT({ id:user._id }),
-  //   }
-  //  }
+   async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
+    const user=await this.create(RegisterDto);
+    return{
+      User:user,
+      token:this.getJWT({ id:user._id }),
+    }
+   }
 
 
   async login(LoginDto:LoginDto):Promise<LoginResponse>{
