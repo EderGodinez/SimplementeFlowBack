@@ -6,29 +6,29 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
-
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  //Creacion de una orden por medio de un checkout
+  @Post('create-checkout-session')
+  async createCheckoutSession(@Body() body:CreateOrderDto) {
+    return this.ordersService.createCheckoutSession(body);
   }
-
+//Webhook de stripe encargado de esperar la confirmacion del pago para crear el pedido y almacenarlo en la base de datos.
+  @Post('webhook')
+  async webhook(@Body() body: any) {
+    return this.ordersService.handleWebhook(body);
+  }
+  //Obtener todos los pedidos
   @Get()
   findAll() {
     return this.ordersService.findAll();
   }
-
+//Obtener un pedido en especifico por medio de la ID
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+    return this.ordersService.findOne(id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
-  }
-
+  //Eliminar una orden
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+    return this.ordersService.remove(id);
   }
 }

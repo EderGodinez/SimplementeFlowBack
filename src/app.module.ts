@@ -8,7 +8,7 @@ import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [AuthModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env. MONGO_URL),
+    MongooseModule.forRoot(process.env.MONGO_URL),
     ProductsModule,
     OrdersModule],
 })

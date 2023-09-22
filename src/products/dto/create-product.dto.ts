@@ -2,7 +2,7 @@ import { ArrayMaxSize, ArrayMinSize, IsArray, IsCurrency, IsObject, IsString, Mi
 
 export class CreateProductDto {
     @IsString()
-    modelName:string;
+    ProductName:string;
     @IsString()
     @MinLength(20)
     description:string;

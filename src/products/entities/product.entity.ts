@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
+
 @           Schema()
             export class GeneralInf{
             @Prop({default:'Nike'})
@@ -39,7 +40,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
             export class Sizes{
                 @Prop({required:true,unique:true,min:20,max:30})
                 size:number;
-                @Prop({required:true,type:Number})
+                @Prop({required:true,type:Number,min:0})
                 stock:number;
             }
             
@@ -70,15 +71,14 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
              }
 @Schema()
 export class Product {
-    id_?:string;
     @Prop({required:true,unique:true})
-    modelName:string;
+    ProductName:string;
     @Prop({required:true,minlength:20})
     description:string;
     @Prop({required:true,minlength:4})
     price:number;
-    @Prop({minlength:1,default:{}})
-    sizes:Sizes[];
+    @Prop({default: {},type:Map})
+    sizes: Record<string,number>;
     @Prop({required:true,minlength:1})
     images:string[];
     @Prop({required:false,default:{}})
