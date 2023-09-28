@@ -1,13 +1,14 @@
+
 //Modulos
 import {Injectable } from '@nestjs/common';
-import { CreateOrderDto, OrderProduct } from './dto/create-order.dto';
+import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from './entities/order.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/auth/entities/user.entity';
 import Stripe from 'stripe';
-import { Console } from 'console';
 import { Product } from 'src/products/entities/product.entity';
+import { EmailService } from 'src/email/email.service';
+import { OrderInfoResponse,Shipping } from './interfaces/orderinfo.response';
 //Clases
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   apiVersion: '2023-08-16',
@@ -18,9 +19,9 @@ export class OrdersService {
   constructor(@InjectModel(Order.name)
               private OrdersModel: Model<Order>,
               @InjectModel(Product.name) 
-              private ProductModel: Model<Product>){}
-  
-  
+              private ProductModel: Model<Product>,
+              private EmailService:EmailService){}
+              
   findAll():Promise<Order[]>{
     return this.OrdersModel.find();
   }
@@ -44,6 +45,7 @@ export class OrdersService {
         cart: JSON.stringify(CreateOrderDto.Details),
       },
     });
+    //Se crea el listado de los productos para el checkout sesion
     const line_items = CreateOrderDto.Details.map((item) => {
       return {
         price_data: {
@@ -53,15 +55,15 @@ export class OrdersService {
             images: [item.Image],
             description: item.productDescription,
             metadata: {
-              size: item.Size, // Asume que `size` es la propiedad que contiene el tamaño
+              size: item.Size, // Asume que `size` es la propiedad que contiene el numero de calzado
             },
           },
-          unit_amount: item.Price * 100,
+          unit_amount: Math.round(item.Price * 100),
         },
         quantity: item.Amount,
       };
     });
-  
+  //Se crea el checkout sesion
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: {
@@ -76,7 +78,7 @@ export class OrdersService {
               currency: "mxn",
             },
             display_name: "Free shipping",
-            // Delivers between 5-7 business days
+            //Las entrega se daran en un rago de entre 5 a 10 dias
             delivery_estimate: {
               minimum: {
                 unit: "business_day",
@@ -84,7 +86,7 @@ export class OrdersService {
               },
               maximum: {
                 unit: "business_day",
-                value: 7,
+                value: 10,
               },
             },
           },
@@ -101,17 +103,12 @@ export class OrdersService {
      //Url de redireccion en caso de que el pago sea rechazado 
      cancel_url: `http://localhost:4200/SimplementeFlow/Checkout`
     });
-    
-  
-    // res.redirect(303, session.url);
+    //Retorna URL en la cual el usuario ingresara sus datos bancarios
     return{ url: session.url };
    }
-  
-  // Create order function
-  
-  async createOrder(customer, data){
+  //Crear una orden  en la base de ddatos
+  async createOrder(customer, data):Promise<OrderInfoResponse>{
     const Items = JSON.parse(customer.metadata.cart);
-  
     const products = Items.map((item) => {
       return {
         productName:item.productName ,
@@ -130,27 +127,28 @@ export class OrdersService {
       TotalPay:data.amount_total/100,
       payment_status: data.payment_status,
     });
-    
     try {
       const savedOrder = await newOrder.save();
-    } catch (err) {
-      console.log(err);
+
+    const {_id,...rest}=savedOrder.toJSON()
+    return {
+      UserId:rest.UserId.toString(),
+      numOrder:rest.numOrder,
+      PayMethod:rest.PayMethod,
+      Details:rest.Details,
+      shipping:rest.shipping as Shipping,
+      TotalPay:rest.TotalPay,
+      OrderDate:rest.OrderDate
     }
-    
+    } catch (err) {console.log(err);}
   }
-  
-  // Stripe webhoook
-  
+  // Stripe webhoook encargado de validar el estado del checkout
   async handleWebhook(body: any) {
     let data;
     let eventType;
-
-    // Check if webhook signing is configured.
     let webhookSecret;
-    // webhookSecret = process.env.STRIPE_WEB_HOOK;
-
+    //Si existe un webhook en linea 
     if (webhookSecret) {
-      // Retrieve the event by verifying the signature using the raw body and secret.
       let event;
       let signature = body.headers["stripe-signature"];
       try {
@@ -158,27 +156,30 @@ export class OrdersService {
           body,
           signature,
           webhookSecret
-        );
-      } catch (err) {
-        throw new Error('Webhook signature verification failed');
+          );
+        } catch (err) {
+          throw new Error('Webhook signature verification failed');
+        }
+        data = event.data.object;
+        eventType = event.type;
       }
-      data = event.data.object;
-      eventType = event.type;
-    }
-    else{
-      data = body.data.object;
-      eventType = body.type;
-    }
-    if (eventType == "checkout.session.completed") {
-      stripe.customers
+      else{
+        data = body.data.object;
+        eventType = body.type;
+      }
+      //Valida si el checkout tiene un estado de completado.
+      if (eventType == "checkout.session.completed") {
+        
+        stripe.customers
         .retrieve(data.customer)
         .then(async (customer) => {
           try {
-            // CREATE ORDER
-            this.createOrder(customer, data);
+            // Crear la orden y guardadrla en una constante
+           const orderinfo=await this.createOrder(customer, data);
             //Actualizar stock de los productos ordenados
             this.updateStock(customer)
-
+            //Se envia la informacion a correo capturado al momento de realizar el pago.
+            this.EmailService.sendOrderInfo(orderinfo)
           } catch (err) {
             console.log(typeof this.createOrder);
             console.log(err);

@@ -10,7 +10,7 @@ export class User{
     names:string;
     @Prop({required:true})
     lastnames:string;
-    @Prop({unique:true,type:Date,required:true})
+    @Prop({type:Date,required:true})
     birthdate:Date;
     @Prop({required:true})
     gender:string;

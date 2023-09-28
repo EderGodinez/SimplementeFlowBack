@@ -32,8 +32,11 @@ export class AuthService {
        return user;
       
     } catch (error) {
+      console.log(error)
       if( error.code === 11000 ) {
-        throw new BadRequestException(`${ createUserDto.email } already exists!`)
+        const {keyPattern}=error;
+        const e=Object.keys(keyPattern)[0]
+        throw new BadRequestException(`${createUserDto[e]} already exists!`)
       }
       throw new InternalServerErrorException('Something terribe happen!!!');
     }
