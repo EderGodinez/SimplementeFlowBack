@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
       token,{secret: process.env.JWT_SECRET});
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
-      const user=await this.AuthService.findUserById(payload.id)
+      const user=await this.AuthService.findUserById(payload.id._id)
       if (!user) throw new UnauthorizedException('This user does not exist')
       if (!user.isActive) throw new UnauthorizedException('This is not active')
       request['user'] = user;

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/auth/entities/user.entity';
+//import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports:[

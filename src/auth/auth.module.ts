@@ -4,13 +4,13 @@ import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+//import { ConfigModule } from '@nestjs/config';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
   imports: [
-    ConfigModule.forRoot(),
     MongooseModule.forFeature([
     { name: User.name, schema: UserSchema }
   ]),
@@ -19,6 +19,12 @@ import { ConfigModule } from '@nestjs/config';
      secret: process.env.JWT_SECRET,
      signOptions: { expiresIn: '6h' },
    }),
+  //  JwtModule.register({
+  //   global: true,
+  //   secret: process.env.JWT_ADMIN,
+  //   signOptions: { expiresIn: '1h' },
+  // }),
+  EmailModule
   ]
 })
 export class AuthModule {}

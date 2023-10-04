@@ -1,5 +1,7 @@
+import { User } from "../entities/user.entity";
+
 export interface JwtPayload{
-    id:string;
+    id:User
     iat?:number;
     exp?:number;
 }

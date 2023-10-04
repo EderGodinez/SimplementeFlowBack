@@ -1,56 +1,85 @@
+
+
 import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto} from './dto/index'
-import { BadRequestException, Injectable ,InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Injectable ,InternalServerErrorException, Res, UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import * as bcryptjs from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload';
 import { LoginResponse } from './interfaces/login-response';
-
-
+import { EmailService } from 'src/email/email.service';
+import { tokenUser } from './interfaces/infoUser.interface';
+import { Response } from 'express'; // Importa Response de express
 @Injectable()
 export class AuthService {
+  
   constructor(@InjectModel(User.name) 
               private UserModel: Model<User>,
-              private JwtService:JwtService) {}
+              private JwtService:JwtService,
+              private EmailService:EmailService) {}
    
-
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    
-    try {
-      
-      const { password, ...userData } = createUserDto;
-           
-      const newUser = new this.UserModel({
-        password: bcryptjs.hashSync( password, 10 ),
-        ...userData
-      });
-       await newUser.save();
-       const { password:_, ...user } = newUser.toJSON();
-       
-       return user;
-      
-    } catch (error) {
-      console.log(error)
-      if( error.code === 11000 ) {
-        const {keyPattern}=error;
-        const e=Object.keys(keyPattern)[0]
-        throw new BadRequestException(`${createUserDto[e]} already exists!`)
-      }
-      throw new InternalServerErrorException('Something terribe happen!!!');
-    }
+async register(RegisterDto:RegisterDto):Promise<LoginResponse>{  
+  const user=await this.create(RegisterDto);
+  if(!user.isActive){
+    return null as LoginResponse
   }
+  return{
+    User:user,
+    token:this.getJWT({ id:user }),
+  }
+}
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { password, ...userData } = createUserDto;  
+      const newUser = new this.UserModel({
+       password: bcryptjs.hashSync( password, 10 ),
+       ...userData
+      });
+      const conditions = [
+        { email: userData.email }, // Condición 1: email específico
+        { phone: userData.phone }, // Condición 2: phone específico
+      ];
+      const userExist=await this.UserModel.find({$or: conditions});
+      if(userExist.length>0){
+        return {isActive:false} as User
+      }
+      const {email}=newUser;
+      const token=this.getJWT({id:newUser})
+      const UserInfo = new tokenUser(token,email); //Se crea un objeto para pasarlo a enviar el correo
+     await this.EmailService.sendUserConfirmation(UserInfo)//Se envia un correo de confirmacion.   
+       const { password:_, ...user } = newUser.toJSON();
+       const objectId =new mongoose.Types.ObjectId();
+       user._id=objectId.toString()
+       return user;
+  }
+  async confirmEmail(token:string) {
+    try {
+      const payload = await this.JwtService.verify<JwtPayload>(token,{secret: process.env.JWT_SECRET});
+      // El token es válido, y la información está contenida en 'payload'
+      const {iat,exp,...user}=payload;
+      const {_id,data_Address,shopping_car,likes,UserRole,isActive,...rest}=user.id
+      const newUser = new this.UserModel(
+        {
+          email:rest.email,
+          names:rest.names,
+          lastnames:rest.lastnames,
+          phone:rest.phone,
+          password:rest.password,
+          birthdate:rest.birthdate,
+          gender:rest.gender
+        }
+      );
+      const result =await newUser.save();
+      // Redirige al usuario a la URL de Facebook al finalizar el registro
+      
 
-   async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
-    const user=await this.create(RegisterDto);
-    return{
-      User:user,
-      token:this.getJWT({ id:user._id }),
+    } catch (error) {
+      // Maneja el error si el token no es válido
+      throw new Error('Error al tratar de obtener informacion del token'+error);
     }
-   }
-
-
+    
+  }
   async login(LoginDto:LoginDto):Promise<LoginResponse>{
     const {email,password}=LoginDto;
     const user =await this.UserModel.findOne({email});
@@ -73,26 +102,21 @@ async findUserById(UserId:string){
     const{password,...rest}=user.toJSON();
     return rest;
 }
-
-
-
-
   findAll():Promise<User[]>{
     return this.UserModel.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} auth`;
+    return this.UserModel.findById(id);
   }
 
   update(id: number, UpdateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} auth`;
+    return this.UserModel.findByIdAndUpdate(id,UpdateUserDto);
   }
-
   remove(id: number) {
-    return `This action removes a #${id} auth`;
+    return this.UserModel.findByIdAndDelete(id);
   }
   getJWT(payload:JwtPayload){
-      return this.JwtService.sign(payload);
+      return this.JwtService.sign(payload,{secret:process.env.JWT_SECRET});
   }
 }

@@ -8,22 +8,21 @@ import { User } from 'src/auth/entities/user.entity';
 import { ConfirmEmail } from './views/UserConfirm';
 //Paquete de envio de correos
 const nodemailer = require('nodemailer');
-
-//clase para crear transporter
-let transporter = nodemailer.createTransport({
+//crear transporter
+const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
     secure: false, // upgrade later with STARTTLS
     auth: {
-      user: process.env.NODE_MAILER_USER,
-      pass: process.env.NODE_MAILER_PASS,
+      user: 'eder.godinez9511@alumnos.udg.mx',
+      pass: 'iunj wqax murn bdpf'
     },
   });
 @Injectable()
 export class EmailService {
     constructor(@InjectModel(User.name) 
                 private UserModel: Model<User>) {}
-
+    
   async  sendOrderInfo(orderinfo:OrderInfoResponse){
         const userinfo=await this.UserModel.findById(orderinfo.UserId)
         const {data_Address,names,lastnames}=userinfo;
@@ -58,5 +57,6 @@ export class EmailService {
             throw error;
         }
     }
+    
 }
     
