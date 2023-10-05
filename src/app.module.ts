@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductsModule } from './products/products.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OrdersModule } from './orders/orders.module';
 import { EmailModule } from './email/email.module';
 import { FilesModule } from './files/files.module';
@@ -16,7 +16,7 @@ import { FilesModule } from './files/files.module';
     OrdersModule,
     EmailModule,
     FilesModule],
-  providers: [EmailModule],
+  providers: [EmailModule,ConfigService],
 })
 export class AppModule {}
 

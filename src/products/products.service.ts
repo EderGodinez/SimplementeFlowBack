@@ -4,32 +4,49 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './entities/product.entity';
 import { Model } from 'mongoose';
+import { CreateProductResponse } from './interfaces/CreateProduct.response';
 
 @Injectable()
 export class ProductsService {
   constructor(@InjectModel(Product.name)
     private ProductsModel: Model<Product>){}
-    async create(CreateProductDto: CreateProductDto): Promise<CreateProductDto> {
-    
+    async create(CreateProductDto: CreateProductDto): Promise<CreateProductResponse> {
+    try{
       const newProduct=new this.ProductsModel(CreateProductDto);
-         await newProduct.save();
-         
-         return newProduct;
+      const existingProduct = await this.ProductsModel.findOne({
+        ProductName: CreateProductDto.ProductName,
+      });
+      //SE VALIDA SI ES QUE EXISTE EL PRODUCTO
+      if (existingProduct) {
+        return{
+          message:`Product ${CreateProductDto.ProductName} already existing in database with this name`,
+          status:400
+        }
+      }
+      await newProduct.save();
+      return{
+        message:`product ${CreateProductDto.ProductName} saved successfully`,
+        status:200
+      }
+    }catch(error){
+      throw new Error('Product could not be created'+error);
+    }
+      
     }
 
   findAll() {
-    return `This action returns all products`;
+    return this.ProductsModel.find()
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return this.ProductsModel.findById(id);
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+    return this.ProductsModel.findByIdAndUpdate(id,updateProductDto)
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+    return this.ProductsModel.findByIdAndDelete(id);
   }
 }

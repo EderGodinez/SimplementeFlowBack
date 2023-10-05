@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto} from './dto/index'
+import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
 import { LoginResponse } from './interfaces/login-response';
 import { User } from './entities/user.entity';
 import { AuthGuard } from './guards/auth/auth.guard';
@@ -50,7 +50,14 @@ export class AuthController {
     const redirectUrl = 'http://localhost:4200/SimplementeFlow/NewUser/Success'; // Replace with your desired URL
     res.redirect(redirectUrl);
   }
-
+  @Post('/AddProduct')
+  addProductAtCard(@Body() AddCard:userAddProduct){
+    return this.authService.addProductAtCar(AddCard)
+  }
+  @Post('/AddLike')
+  addLikes(@Body() userAddLike:userAddLike){
+    return this.authService.addLikes(userAddLike)
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
