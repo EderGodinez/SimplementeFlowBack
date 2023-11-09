@@ -18,8 +18,6 @@ export class Order {
     shipping:Object;
     @Prop({type:Number})
     TotalPay: number;
-    @Prop({type: String})
-    payment_status: 'paid' | 'pending'
     @Prop({ type: String,default:"pending"})
     delivery_status: 'delivered' | 'pending'|"shipped"
 }

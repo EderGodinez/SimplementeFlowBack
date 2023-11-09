@@ -1,4 +1,4 @@
 export class CreateFileDto {
-    Files:File[]
+   // Files:File[]
     ProductName:string;
 }

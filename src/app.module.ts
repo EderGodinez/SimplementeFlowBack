@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OrdersModule } from './orders/orders.module';
 import { EmailModule } from './email/email.module';
 import { FilesModule } from './files/files.module';
-
 @Module({
   imports: [
     AuthModule,//Users
@@ -15,7 +14,8 @@ import { FilesModule } from './files/files.module';
     ProductsModule,
     OrdersModule,
     EmailModule,
-    FilesModule],
+    FilesModule,
+  ],
   providers: [EmailModule,ConfigService],
 })
 export class AppModule {}

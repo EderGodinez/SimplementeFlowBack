@@ -36,13 +36,13 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
         description:string;
             }
     
-            @Schema()
-            export class Sizes{
-                @Prop({required:true,unique:true,min:20,max:30})
-                size:number;
-                @Prop({required:true,type:Number,min:0})
-                stock:number;
-            }
+            // @Schema()
+            // export class Sizes{
+            //     @Prop({required:true,unique:true,min:20,max:30})
+            //     size:number;
+            //     @Prop({required:true,type:Number,min:0})
+            //     stock:number;
+            // }
             
             export  enum Shoes{
                     Original="Original",
@@ -75,14 +75,18 @@ export class Product {
     ProductName:string;
     @Prop({required:true,minlength:20})
     description:string;
+    @Prop({required:true,min:0,max:100})
+    Discount:number;
+    @Prop({required:true,default:'INSTOCK'})
+    inventoryStatus:string
     @Prop({required:true,minlength:4})
     price:number;
     @Prop({default: {},type:Map})
-    sizes: Record<string,number>;
+    sizes: Record<number,number>;
     @Prop({required:true,minlength:1})
     images:string[];
     @Prop({required:false,default:{}})
-    General?:GeneralInf;
+    General:GeneralInf;
     @Prop({required:true,minlength:1})
     adventages:string[];
     @Prop({required:true,minlength:1})

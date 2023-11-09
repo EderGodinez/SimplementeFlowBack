@@ -10,17 +10,21 @@ import { Product } from 'src/products/entities/product.entity';
 import { EmailService } from 'src/email/email.service';
 import { OrderInfoResponse,Shipping } from './interfaces/orderinfo.response';
 //Clases
-const stripe = new Stripe(process.env.STRIPE_API_KEY, {
-  apiVersion: '2023-08-16',
-});
+
 
 @Injectable()
 export class OrdersService {
+  private readonly stripe: Stripe;
   constructor(@InjectModel(Order.name)
               private OrdersModel: Model<Order>,
               @InjectModel(Product.name) 
               private ProductModel: Model<Product>,
-              private EmailService:EmailService){}
+              private EmailService:EmailService){
+                //console.log(process.env.STRIPE_API_KEY)
+                this.stripe = new Stripe(process.env.STRIPE_API_KEY, {
+                  apiVersion: '2023-08-16',
+                });
+              }
               
   findAll():Promise<Order[]>{
     return this.OrdersModel.find();
@@ -39,7 +43,7 @@ export class OrdersService {
     }
   }
    async createCheckoutSession(CreateOrderDto:CreateOrderDto){
-    const customer = await stripe.customers.create({
+    const customer = await this.stripe.customers.create({
       metadata: {
         userId: CreateOrderDto.UserId,
         cart: JSON.stringify(CreateOrderDto.Details),
@@ -64,7 +68,7 @@ export class OrdersService {
       };
     });
   //Se crea el checkout sesion
-    const session = await stripe.checkout.sessions.create({
+    const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: {
         allowed_countries: ["US", "CA", "MX"],
@@ -152,7 +156,7 @@ export class OrdersService {
       let event;
       let signature = body.headers["stripe-signature"];
       try {
-        event = stripe.webhooks.constructEvent(
+        event = this.stripe.webhooks.constructEvent(
           body,
           signature,
           webhookSecret
@@ -170,7 +174,7 @@ export class OrdersService {
       //Valida si el checkout tiene un estado de completado.
       if (eventType == "checkout.session.completed") {
         
-        stripe.customers
+        this.stripe.customers
         .retrieve(data.customer)
         .then(async (customer) => {
           try {
