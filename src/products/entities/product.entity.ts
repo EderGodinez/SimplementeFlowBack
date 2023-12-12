@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 
-@           Schema()
+            // @Schema()
             export class GeneralInf{
             @Prop({default:'Nike'})
             patent:string;
@@ -34,16 +34,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
         Title:string;
         @Prop({required:true,type:String})
         description:string;
-            }
-    
-            // @Schema()
-            // export class Sizes{
-            //     @Prop({required:true,unique:true,min:20,max:30})
-            //     size:number;
-            //     @Prop({required:true,type:Number,min:0})
-            //     stock:number;
-            // }
-            
+            }        
             export  enum Shoes{
                     Original="Original",
                     Exclusive="Exclusivo",

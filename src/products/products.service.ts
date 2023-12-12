@@ -28,6 +28,7 @@ export class ProductsService {
       }
      const New= await newProduct.save();
       return {
+        product:New,
         message: `Producto ${CreateProductDto.ProductName} guardado exitosamente`,
         status: HttpStatus.OK,
       };
