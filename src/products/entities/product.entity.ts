@@ -7,22 +7,22 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
             patent:string;
             @Prop({default:'Jordan 1'})
             model:string;
-            @Prop({default:'Unisex'})
-            Gender:Gender;
-            @Prop({default:'EveryOne'})
+            @Prop({default:'Todos'})
+            Category:Categories;
+            @Prop({default:'Todos'})
             age:Public;
-            @Prop({default:'Narrow'})
+            @Prop({default:'Angosto'})
             width_type:Width_type;
-            @Prop({default:'Laces'})
-            fit_type:'Laces'|'Velcro'
+            @Prop({default:'Cordones'})
+            fit_type:'Cordones'|'Velcro'
             @Prop({default:'Original'})
             class_shoes:Shoes;
-            @Prop({default:'leather'})
-            E_Material:'leather'|'fabric';
-            @Prop({default:'mesh'})
-            I_Material:'mesh'|'cotton'
-            @Prop({default:'rubber'})
-            Shoe_sole:string;        
+            @Prop({default:'Cuero'})
+            E_Material:'Cuero'|'Tela'|'Gamuza';
+            @Prop({default:'Algodon'})
+            I_Material:'Malla'|'Algodon'
+            @Prop({default:'Goma'})
+            Shoe_sole:string;  
              }
             @Schema()
             export class Coments{
@@ -46,28 +46,28 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
             
             export  enum Shoes{
                     Original="Original",
-                    Exclusive="Exclusive",
+                    Exclusive="Exclusivo",
                     G5="G5",
                     UA="UA",
                     Top="Top Quality"
             }
                 
             export enum Width_type{  
-                        Narrow="Narrow",
-                        Standard="Standard",
-                        wide="wide",
-                        extra_wide="extra_wide"
+                        Angosto="Angosto",
+                        Estandar="Estandar",
+                        ancho="ancho",
+                        extra_ancho="extra ancho"
              } 
-                    
-            export enum Gender{
-                            Male='Male',
-                            Female='Female',
-                            Unisex='Unisex'
+            export enum Categories{
+                            Hombre='Hombres',
+                            Mujer='Mujeres',
+                            Nino='Niños',
+                            Todos='Todos'
             }
             export enum Public{
-                                Children="Children",
-                                Adults="Adults",
-                                EveryOne="EveryOne"
+                                Children="Niños",
+                                Adultos="Adultos",
+                                Todos="Todos"
              }
 @Schema()
 export class Product {
@@ -77,12 +77,12 @@ export class Product {
     description:string;
     @Prop({required:true,min:0,max:100})
     Discount:number;
-    @Prop({required:true,default:'INSTOCK'})
+    @Prop({required:true,default:'Disponible'})
     inventoryStatus:string
-    @Prop({required:true,minlength:4})
+    @Prop({required:true,minlength:3})
     price:number;
-    @Prop({default: {},type:Map})
-    sizes: Record<number,number>;
+    @Prop({default: {},type:Object})
+    sizes: Record<string,number>;
     @Prop({required:true,minlength:1})
     images:string[];
     @Prop({required:false,default:{}})
@@ -91,6 +91,8 @@ export class Product {
     adventages:string[];
     @Prop({required:true,minlength:1})
     disadventages:string[];
+    @Prop({default:new Date()})
+    RegisterDate:Date
     coments?:Coments[];
 }
 
