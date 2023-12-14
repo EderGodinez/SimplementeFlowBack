@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Query } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -98,5 +98,35 @@ export class ProductsService {
       );
     }
 
+  }
+  findByCategory(category:string,limit?:number,skip?:number):Promise<Product[]>{
+    return this.ProductsModel.find({'General.Category':[category,'Todos']}).skip(skip).limit(limit).exec();
+  }
+  GetNewestProducts(limit?:number,skip?:number):Promise<Product[]>{
+    return this.ProductsModel.find().skip(skip).limit(limit).sort({RegisterDate:-1,inventoryStatus:1}).exec()
+  }
+  GetProductsOfferts(limit?:number,skip?:number):Promise<Product[]>{
+    return this.ProductsModel.find({Discount:{$gt:0}}).skip(skip).limit(limit)
+  }
+  SearchProducts(query:string):Promise<Product[]>{
+  return this.ProductsModel.find({
+    $or: [
+      { ProductName: { $regex: new RegExp(query, 'i') } },
+      { Description: { $regex: new RegExp(query, 'i') } },
+      {'General.patent':{$regex: new RegExp(query, 'i')}},
+      {'General.model':{$regex: new RegExp(query, 'i')}},
+      ]
+  }).exec()
+  }
+  TotalProducts():Promise<number>{
+    return this.ProductsModel.find().countDocuments()
+  }
+  GetProductSimilar(productsName:string,limit?:number):Promise<Product[]>{
+    const productProperties:string[]=productsName.split(' ')
+    //Obtener los nombres de productos similares pero sin considerar el que pasamos
+    return this.ProductsModel.find({ProductName: {
+      $regex: `${productProperties[0]}`,
+      $options:'i' ,
+      $ne: productsName} }).limit(limit).exec()
   }
 }

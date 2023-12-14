@@ -24,5 +24,5 @@ export class CreateProductDto {
     @ArrayMinSize(1,{message:'Debe de contener como minimo una desventaja cada producto'})
     @ArrayMaxSize(5,{message:'Cada producto tiene como limite 5 desventajas'})
     disadventages:string[];
-    sizes:any
+    sizes:{[key:number]:number}
 }
