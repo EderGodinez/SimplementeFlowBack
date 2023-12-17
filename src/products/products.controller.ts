@@ -44,12 +44,10 @@ export class ProductsController {
   }
   @Get('search')
   SearchProducts(@Query('query') query:string):Promise<Product[]>{
-    console.log(query)
     return this.productsService.SearchProducts(query)
   }
   @Get('similar')
   GetSimilarProducts(@Query('limit') limit:string,@Query('ProductName') productname:string){
-    console.log(productname,limit)
     const limitNumber = limit ? parseInt(limit, 10) : undefined;
     return this.productsService.GetProductSimilar(productname,limitNumber)
   }

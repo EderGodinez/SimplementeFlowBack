@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OrdersModule } from './orders/orders.module';
 import { EmailModule } from './email/email.module';
 import { FilesModule } from './files/files.module';
+import { MessagesResolver } from './messages/messages.resolver';
+import { MessagesModule } from './messages/messages.module';
 @Module({
   imports: [
     AuthModule,//Users
@@ -15,8 +17,9 @@ import { FilesModule } from './files/files.module';
     OrdersModule,
     EmailModule,
     FilesModule,
+    MessagesModule,
   ],
-  providers: [EmailModule,ConfigService],
+  providers: [EmailModule,ConfigService, MessagesResolver],
 })
 export class AppModule {}
 

@@ -30,6 +30,10 @@ export class AuthController {
       return { message: `An error occurred during registration ${error}`, status: 500 };
     }
   }
+  @Get('username/:id')
+  GetUsername(@Param('id') id:string){
+    return this.authService.getUsername(id)
+  }
   @UseGuards(AuthGuard)
   @Get()
   findAll() {
@@ -44,12 +48,14 @@ export class AuthController {
         token:this.authService.getJWT({id:user})
       }
   }
+  
   @Get('/confirm/:token')
   confirm(@Res() res: Response,@Param('token') token:string){
     this.authService.confirmEmail(token);
     const redirectUrl = 'http://localhost:4200/SimplementeFlow/NewUser/Success'; // Replace with your desired URL
     res.redirect(redirectUrl);
   }
+  
   @Post('/AddProduct')
   addProductAtCard(@Body() AddCard:userAddProduct){
     return this.authService.addProductAtCar(AddCard)
@@ -58,9 +64,10 @@ export class AuthController {
   addLikes(@Body() userAddLike:userAddLike){
     return this.authService.addLikes(userAddLike)
   }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+    return this.authService.findOne(id);
   }
 
   @Patch(':id')

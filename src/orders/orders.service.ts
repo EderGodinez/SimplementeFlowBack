@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 //Modulos
 import {Injectable } from '@nestjs/common';
@@ -9,6 +10,7 @@ import Stripe from 'stripe';
 import { Product } from 'src/products/entities/product.entity';
 import { EmailService } from 'src/email/email.service';
 import { OrderInfoResponse,Shipping } from './interfaces/orderinfo.response';
+import { ProductUpdated } from './interfaces/StatusUpdated.response';
 //Clases
 
 
@@ -26,8 +28,9 @@ export class OrdersService {
                 });
               }
               
-  findAll():Promise<Order[]>{
-    return this.OrdersModel.find();
+  async findAll():Promise<Order[]>{
+    return this.OrdersModel.find().populate({path:'UserId',select:'names lastnames'}).exec();
+    
   }
   findOne(id: string):Promise<Order> {
     return this.OrdersModel.findById(id);
@@ -216,6 +219,25 @@ products.forEach(product => {
   console.error('Error al actualizar el documento:', error);
 });
   });  
+}
+async updateStatus(numOrder:number,delivery_status:string):Promise<ProductUpdated>{
+  try{
+    const exist=await this.OrdersModel.findOne({numOrder}).exec();
+  if (exist) {
+    const updated=await this.OrdersModel.updateOne({numOrder},{delivery_status}).exec()
+    return{
+      HttpStatus:HttpStatus.OK,
+      message:`El estado de la orden a cambiado a ${delivery_status}`,
+      //Order:updated
+    }
+  }
+  else{
+    throw new HttpException(`Orden con numero${numOrder} no encontrado`,HttpStatus.NOT_FOUND)
+  }
+  }catch(error){
+    throw  error
+  }
+  
 }
 }
 

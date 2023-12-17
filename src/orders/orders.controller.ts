@@ -2,7 +2,6 @@ import { CheckoutResponse } from './interfaces/Checkout.response';
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -23,8 +22,15 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 //Obtener un pedido en especifico por medio de la ID
+  @Patch(':numOrder')
+  UpdateStatus(@Param('numOrder') numOrder: string,@Body() body:{status:string}){
+    
+    const {status}=body
+    const numOrderInterger=parseInt(numOrder, 10)
+  return this.ordersService.updateStatus(numOrderInterger,status)
+  }
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string){
     return this.ordersService.findOne(id);
   }
   //Eliminar una orden

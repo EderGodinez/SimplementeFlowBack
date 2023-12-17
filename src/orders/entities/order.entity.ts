@@ -1,16 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { SchemaTypes, ObjectId} from "mongoose";
-import { Type } from 'class-transformer';
 
 @Schema()
 export class Order {
     @Prop({required:true,unique:true})
     numOrder:number;
-    @Prop({ type: SchemaTypes.ObjectId,required:true}) // Establece la referencia a la colección User
+    @Prop({ type: SchemaTypes.ObjectId,ref:'User',required:true}) // Establece la referencia a la colección User
     UserId: ObjectId;
     @Prop({default:defaultOrderDate})
     OrderDate?: Date;
-    @Prop({required:true,default:"card"})
+    @Prop({required:true,default:"Tarjeta"})
     PayMethod?: string;
     @Prop({minlength:1,required:true})
     Details: OrderProduct[];
@@ -18,8 +17,8 @@ export class Order {
     shipping:Object;
     @Prop({type:Number})
     TotalPay: number;
-    @Prop({ type: String,default:"pending"})
-    delivery_status: 'delivered' | 'pending'|"shipped"
+    @Prop({ type: String,default:"Pendiente"})
+    delivery_status: 'Cancelado' | 'Pendiente'|"Entregado"
 }
 @Schema()
 export class OrderProduct {

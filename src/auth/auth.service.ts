@@ -141,7 +141,7 @@ async findUserById(UserId:string){
     return this.UserModel.find();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.UserModel.findById(id);
   }
 
@@ -153,5 +153,17 @@ async findUserById(UserId:string){
   }
   getJWT(payload:JwtPayload){
       return this.JwtService.sign(payload,{secret: this.configService.get<string>('JWT_SECRET')});
+  }
+  async getUsername(id:string){
+    try {
+      const resp = await this.UserModel.findById(id).select('names lastnames').exec();
+      if (!resp) {
+        throw new Error('Usuario no encontrado');
+      }
+      const { names, lastnames } = resp;
+      return {username:`${names} ${lastnames}`}
+    } catch (error) {
+      throw new Error('Error al obtener el nombre de usuario');
+    }
   }
 }
