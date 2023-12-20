@@ -21,6 +21,14 @@ export class OrdersController {
   findAll() {
     return this.ordersService.findAll();
   }
+  @Get('mostSelled')
+  findMostSelled(){
+    return this.ordersService.MostSelledProducts()
+  }
+  @Get('earninigs')
+  getEarn(){
+    return this.ordersService.Earnings()
+  }
 //Obtener un pedido en especifico por medio de la ID
   @Patch(':numOrder')
   UpdateStatus(@Param('numOrder') numOrder: string,@Body() body:{status:string}){

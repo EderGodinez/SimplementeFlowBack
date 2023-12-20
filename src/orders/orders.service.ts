@@ -239,6 +239,66 @@ async updateStatus(numOrder:number,delivery_status:string):Promise<ProductUpdate
   }
   
 }
+MostSelledProducts(){
+const currentMonth = new Date().getMonth() +1;//Cambiar a +1 para que sea el mes actual
+return this.OrdersModel.aggregate([
+  {
+    $match: {
+      OrderDate: {
+        $gte: new Date(new Date().getFullYear(), currentMonth - 1, 1), // Primer día del mes actual  año-mes-dia
+        $lt: new Date(new Date().getFullYear(), currentMonth, 1) // Primer día del siguiente mes     año/mes/dia
+      }
+    }
+  },
+  {
+    $unwind: '$Details'
+  },
+  {
+    $group: {
+      _id:{
+        ProductName:'$Details.productName',
+        Size:'$Details.Size',
+        Image:'$Details.Image'
+      } ,
+      totalSold: { $sum: '$Details.Amount' }
+    }
+  },
+  {
+    $sort: { totalSold: -1 }
+  },
+  {
+    $limit: 6
+  }
+]).exec();
+}
+Earnings(){
+  return this.OrdersModel.aggregate([
+    {
+      $match: {
+        OrderDate: {
+          $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+          $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0, // Excluye el campo _id del resultado final
+        totalPay: "$TotalPay",
+      },
+    },
+    {$group:{
+      _id: null,
+      TotalEarnings:{$sum:'$totalPay'}
+    }},
+    {
+      $project: {
+        _id: 0,
+        TotalEarnings: 1,
+      },
+    },
+  ]).exec()
+}
 }
 
 

@@ -3,6 +3,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Message } from './entities/message.entity';
 import { Model } from 'mongoose';
+import { TotalMessages } from './interfaces/TotalMessages.response';
 
 @Injectable()
 export class MessagesService {
@@ -34,19 +35,19 @@ export class MessagesService {
       );
     }
   }
-  async findPendient(){
+  async CountMessagesByStatus(status:string):Promise<TotalMessages>{
     try {
-      const Pendient=await this.MessageModel.find({status:'Pendiente'})
-      if (!Pendient) {
-        throw new HttpException(
-          {
-            message: `No hay mensajes pendientes por mostrar`,
-            status: HttpStatus.NOT_FOUND,
-          },
-          HttpStatus.NOT_FOUND,
-        );
+      const Messages=await this.MessageModel.find({status}).count()
+      if (Messages===0) {
+        return{
+          totalMessages: '0',
+          status: HttpStatus.NOT_FOUND,
+        }
       }
-      return Pendient 
+      return {
+        totalMessages:Messages.toString(),
+        status:HttpStatus.OK
+      }
     } catch (error) {
       throw new HttpException(
         {
@@ -59,6 +60,9 @@ export class MessagesService {
   }
   findOne(id: string) {
     return this.MessageModel.findOne({_id:id});
+  }
+   updateMessage(id:string,Message:Message){
+    return this.MessageModel.findByIdAndUpdate(id,Message)
   }
   remove(id: string) {
     return this.MessageModel.findByIdAndDelete(id);

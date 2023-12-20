@@ -31,7 +31,9 @@ export class OrderProduct {
     @Prop({required:true,min:1})
     Amount:number;
     @Prop({required:true})
-    Price:number; 
+    Price:number;
+    @Prop({required:true})
+    Size:number; 
 }
 function defaultOrderDate() {
     let fechaActual = new Date();
