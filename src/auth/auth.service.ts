@@ -1,7 +1,7 @@
 
 
 import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
-import { BadRequestException, Injectable ,InternalServerErrorException, Res, UnauthorizedException} from '@nestjs/common';
+import { Injectable , InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import mongoose, { Model } from 'mongoose';
@@ -71,33 +71,42 @@ async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
           phone:rest.phone,
           password:rest.password,
           birthdate:rest.birthdate,
-          gender:rest.gender
+          gender:rest.gender,
+          UserRole:UserRole
         }
-      );
-      const result =await newUser.save();
+      ).save();
+      //const result =await newUser.save();
       // Redirige al usuario a la URL de Facebook al finalizar el registro
       
-
+      return 'http://localhost:4200/SimplementeFlow/NewUser/Success'; // Replace with your desired URL
     } catch (error) {
       // Maneja el error si el token no es válido
-      throw new Error('Error when trying to obtain token information'+error);
+      return 'http://localhost:4200/Error'
     }
     
   }
   async login(LoginDto:LoginDto):Promise<LoginResponse>{
     const {email,password}=LoginDto;
-    const user =await this.UserModel.findOne({email});
-    if (!user) {
-      throw new UnauthorizedException('Not valid credencials -email')
+    try{
+      const user =await this.UserModel.findOne({email});
+      if (!user) {
+        throw new UnauthorizedException('No hay correo vinculado a cuenta')
+      }
+
+      if (!bcryptjs.compareSync(password,user.password)) {
+        throw new UnauthorizedException('Contraseña incorrecta')
+      }
+      
+      const {password:_,...rest}=user.toJSON()
+      return{
+        User:rest,
+        token:this.getJWT({ id:user }),
+      }
     }
-    if (!bcryptjs.compareSync(password,user.password)) {
-      throw new UnauthorizedException('Not valid credencials -password')
+    catch(error){
+      throw error 
     }
-    const {password:_,...rest}=user.toJSON()
-    return{
-      User:rest,
-      token:this.getJWT({ id:user.id }),
-    }
+    
 }
 async addProductAtCar(userAddProduct:userAddProduct) :Promise<AddProductResponse> {
   try{
@@ -165,5 +174,9 @@ async findUserById(UserId:string){
     } catch (error) {
       throw new Error('Error al obtener el nombre de usuario');
     }
+  }
+  async GetTotalUsers(){
+    const total=await this.UserModel.find().count().exec()
+    return{TotalUsers:total}
   }
 }

@@ -5,11 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Order, OrderSchema } from './entities/order.entity';
 import { Product, ProductSchema } from 'src/products/entities/product.entity';
 import { EmailModule } from 'src/email/email.module';
+import { User, UserSchema } from 'src/auth/entities/user.entity';
 
 @Module({
   imports:[ MongooseModule.forFeature([
     { name: Order.name, schema: OrderSchema },
     { name: Product.name, schema:  ProductSchema},
+    {name:User.name,schema:UserSchema}
   ]),
   EmailModule
 ],

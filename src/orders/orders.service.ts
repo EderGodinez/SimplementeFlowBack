@@ -11,6 +11,9 @@ import { Product } from 'src/products/entities/product.entity';
 import { EmailService } from 'src/email/email.service';
 import { OrderInfoResponse,Shipping } from './interfaces/orderinfo.response';
 import { ProductUpdated } from './interfaces/StatusUpdated.response';
+import { User } from 'src/auth/entities/user.entity';
+import { Sales } from './classes/Sales.interface';
+import { RegisterUser } from './classes/RegisterUser.interface';
 //Clases
 
 
@@ -21,8 +24,9 @@ export class OrdersService {
               private OrdersModel: Model<Order>,
               @InjectModel(Product.name) 
               private ProductModel: Model<Product>,
+              @InjectModel(User.name) 
+              private UserModel: Model<User>,
               private EmailService:EmailService){
-                //console.log(process.env.STRIPE_API_KEY)
                 this.stripe = new Stripe(process.env.STRIPE_API_KEY, {
                   apiVersion: '2023-08-16',
                 });
@@ -147,7 +151,9 @@ export class OrdersService {
       TotalPay:rest.TotalPay,
       OrderDate:rest.OrderDate
     }
-    } catch (err) {console.log(err);}
+    } catch (err) {
+     throw new err
+    }
   }
   // Stripe webhoook encargado de validar el estado del checkout
   async handleWebhook(body: any) {
@@ -188,8 +194,7 @@ export class OrdersService {
             //Se envia la informacion a correo capturado al momento de realizar el pago.
             this.EmailService.sendOrderInfo(orderinfo)
           } catch (err) {
-            console.log(typeof this.createOrder);
-            console.log(err);
+            throw new err;
           }
         })
         .catch((err) => console.log(err.message));
@@ -224,7 +229,7 @@ async updateStatus(numOrder:number,delivery_status:string):Promise<ProductUpdate
   try{
     const exist=await this.OrdersModel.findOne({numOrder}).exec();
   if (exist) {
-    const updated=await this.OrdersModel.updateOne({numOrder},{delivery_status}).exec()
+    this.OrdersModel.updateOne({numOrder},{delivery_status}).exec()
     return{
       HttpStatus:HttpStatus.OK,
       message:`El estado de la orden a cambiado a ${delivery_status}`,
@@ -298,6 +303,155 @@ Earnings(){
       },
     },
   ]).exec()
+}
+async OrdersInfo(){
+  const CurrentMonth=new Date().getMonth()+1
+  const userRegister = await this.UserModel.aggregate([
+    {
+      $group: {
+        _id: { $month: "$RegisterDate" },
+        totalUsers: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: "$_id",
+        totalUsers: 1,
+      },
+    },
+    {
+      $sort: { month: 1 },
+    },
+    {
+      $group: {
+        _id: null,
+        userStats: { $push: { month: "$month", totalUsers: "$totalUsers" } },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        userStats: {
+          $map: {
+            input: [...Array(CurrentMonth).keys()], // Crear un array de 0 a 11 representando los meses
+            as: "m",
+            in: {
+              month: {
+                $add: [1, "$$m"], // Sumar 1 a cada elemento del array para representar los meses de 1 a 12
+              },
+              totalUsers: {
+                $ifNull: [
+                  {
+                    $filter: {
+                      input: "$userStats",
+                      as: "us",
+                      cond: { $eq: ["$$us.month", { $add: [1, "$$m"] }] },
+                    },
+                  },
+                  { $literal: [{ month: { $add: [1, "$$m"] }}] },
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+  ]);
+  
+  const Sales = await this.OrdersModel.aggregate([
+    {
+      $match: {
+        OrderDate: {
+          $gte: new Date(new Date().getFullYear(), 0, 1), // Primer día del año actual
+          $lt: new Date(), // A Hoy
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$OrderDate" },
+        totalSales: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: "$_id",
+        totalSales: 1,
+      },
+    },
+    {
+      $sort: { month: 1 },
+    },
+    {
+      $group: {
+        _id: null,
+        salesStats: { $push: { month: "$month", totalSales: "$totalSales" } },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        salesStats: {
+          $map: {
+            input: [...Array(CurrentMonth).keys()], // Crear un array de 0 a 11 representando los meses
+            as: "m",
+            in: {
+              month: {
+                $add: [1, "$$m"], // Sumar 1 a cada elemento del array para representar los meses de 1 a 12
+              },
+              totalSales: {
+                $ifNull: [
+                  {
+                    $filter: {
+                      input: "$salesStats",
+                      as: "ss",
+                      cond: { $eq: ["$$ss.month", { $add: [1, "$$m"] }] },
+                    },
+                  },
+                  { $literal: [{ month: { $add: [1, "$$m"] }, totalSales: 0 }] },
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+  ]);
+  const combinedResults = [];
+
+// Crear un mapa para almacenar los resultados por mes
+const resultsMap = new Map();
+
+// Función para combinar los resultados por mes
+const combineResults = (result, key) => {
+  if (!resultsMap.has(key)) {
+    resultsMap.set(key, {});
+  }
+
+  const currentResult = resultsMap.get(key);
+  Object.assign(currentResult, result);
+};
+
+// Combina los resultados de totalSales
+Sales.forEach((result) => {
+  const key = result.month;
+  combineResults(result, key);
+});
+
+// Combina los resultados de totalUsers
+userRegister.forEach((result) => {
+  const key = result.month;
+  combineResults(result, key);
+});
+
+// Convierte los resultados del mapa a un array
+resultsMap.forEach((result, key) => {
+  combinedResults.push({ month: parseInt(key), ...result });
+});
+
+  return combinedResults[0]
 }
 }
 

@@ -129,4 +129,40 @@ export class ProductsService {
       $options:'i' ,
       $ne: productsName} }).limit(limit).exec()
   }
+  async GetStock(){
+    const totalStock=await this.ProductsModel.aggregate([
+      // Convertir el objeto sizes en un array de documentos clave-valor
+      {
+        $project: {
+          sizesArray: {
+            $objectToArray: "$sizes",
+          },
+        },
+      },
+      // Descomponer el array de documentos clave-valor
+      { $unwind: "$sizesArray" },
+      // Agrupar por la clave y sumar los valores
+      {
+        $group: {
+          _id: "$sizesArray.k",
+          total: { $sum: "$sizesArray.v" },
+        },
+      },
+      {
+        $group:{
+          _id:null,
+          TotalStock:{$sum:"$total"}
+        }
+      }
+      // Proyectar solo los resultados finales
+      ,{
+        $project: {
+          _id: 0, // Excluir el campo _id del resultado final si no es necesario
+          TotalStock: 1,
+        },
+      },
+      
+    ]);
+    return totalStock[0]
+    }
 }

@@ -125,13 +125,13 @@ span.MsoHyperlinkFollowed {
                   <td align="left" style="padding:0;Margin:0;width:518px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td class="es-m-txt-c" align="center" style="padding:0;Margin:0"><h2 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:29px;color:#333333">Hey there!<br></h2></td>
+                      <td class="es-m-txt-c" align="center" style="padding:0;Margin:0"><h2 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:29px;color:#333333">Que tal:D!<br></h2></td>
                      </tr>
                      <tr>
-                      <td class="es-m-txt-c" align="center" style="padding:0;Margin:0;padding-top:15px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">We received a request to set your email to ${infoUser.email} If this is correct, please confirm by clicking the button below. If you don’t know why you got this email, please tell us straight away so we can fix this for you.</p></td>
+                      <td class="es-m-txt-c" align="center" style="padding:0;Margin:0;padding-top:15px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">Recibimos una peticion para asignar tu correo ${infoUser.email} a una cuenta de SimplementeFlow si es correcto, Favor de conformar en el boton en la parte posterior del presente correo. Si no sabes por que llego este correo o si no fuiste tu , Favor de hacer caso omiso y reportar la situacion a nosotros al correo SimplementeFlow@gmail.com.</p></td>
                      </tr>
                      <tr>
-                      <td align="center" style="Margin:0;padding-top:20px;padding-right:10px;padding-bottom:15px;padding-left:10px"><span class="es-button-border" style="border-style:solid;border-color:#474745;background:#474745;border-width:0px;display:inline-block;border-radius:20px;width:auto"><a href="http://localhost:3000/auth/confirm/${infoUser.token}" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:16px;color:#EFEFEF;padding:10px 20px 10px 20px;display:inline-block;background:#474745;border-radius:20px;font-weight:normal;font-style:normal;line-height:19px !important;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #474745">Confirm Email</a></span></td>
+                      <td align="center" style="Margin:0;padding-top:20px;padding-right:10px;padding-bottom:15px;padding-left:10px"><span class="es-button-border" style="border-style:solid;border-color:#474745;background:#474745;border-width:0px;display:inline-block;border-radius:20px;width:auto"><a href="http://localhost:3000/users/confirm/${infoUser.token}" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:16px;color:#EFEFEF;padding:10px 20px 10px 20px;display:inline-block;background:#474745;border-radius:20px;font-weight:normal;font-style:normal;line-height:19px !important;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #474745">Confirmar correo</a></span></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -151,7 +151,7 @@ span.MsoHyperlinkFollowed {
                   <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;padding-bottom:5px"><h3 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:normal;line-height:30px;color:#333333">Let's get social</h3></td>
+                      <td align="center" style="padding:0;Margin:0;padding-bottom:5px"><h3 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:normal;line-height:30px;color:#333333">Conoce nuestras redes sociales</h3></td>
                      </tr>
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px;font-size:0">
@@ -164,12 +164,6 @@ span.MsoHyperlinkFollowed {
                           <td valign="top" align="center" style="padding:0;Margin:0"><a href="https://viewstripo.email/" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;color:#333333"><img title="X.com" src="https://xxpqyv.stripocdn.email/content/assets/img/social-icons/logo-black/x-logo-black.png" alt="X" width="32" height="32" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
                          </tr>
                        </table></td>
-                     </tr>
-                     <tr>
-                      <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">You are receiving this email because you have visited our site or asked us about the regular newsletter. You can&nbsp;<a target="_blank" class="unsubscribe" style="mso-line-height-rule:exactly;text-decoration:underline;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;color:#333333;line-height:21px" href="">unsubscribe here</a>&nbsp;or&nbsp;<a target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;color:#333333;line-height:21px" href="https://viewstripo.email">update your subscription preferences</a>.</p></td>
-                     </tr>
-                     <tr>
-                      <td align="center" style="padding:0;Margin:0;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><strong>Vector graphics designed by <a target="_blank" href="http://www.freepik.com/" style="mso-line-height-rule:exactly;text-decoration:underline;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;color:#333333">Freepik</a>.</strong></p></td>
                      </tr>
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">© 2018<br></p></td>

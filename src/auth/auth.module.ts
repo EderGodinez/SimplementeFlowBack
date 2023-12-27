@@ -21,11 +21,6 @@ import { Product, ProductSchema } from 'src/products/entities/product.entity';
      secret: process.env.JWT_SECRET,
      signOptions: { expiresIn: '6h' },
    }),
-  //  JwtModule.register({
-  //   global: true,
-  //   secret: process.env.JWT_ADMIN,
-  //   signOptions: { expiresIn: '1h' },
-  // }),
   EmailModule
   ]
 })

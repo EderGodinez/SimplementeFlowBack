@@ -21,6 +21,10 @@ export class OrdersController {
   findAll() {
     return this.ordersService.findAll();
   }
+  @Get('info')
+  OrdersInfo(){
+    return this.ordersService.OrdersInfo()
+  }
   @Get('mostSelled')
   findMostSelled(){
     return this.ordersService.MostSelledProducts()

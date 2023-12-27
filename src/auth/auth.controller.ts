@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request, Res, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
 import { LoginResponse } from './interfaces/login-response';
@@ -6,7 +6,7 @@ import { User } from './entities/user.entity';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { Response } from 'express';
 
-@Controller('auth')
+@Controller('users')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -19,20 +19,22 @@ export class AuthController {
     try {
       const data = await this.authService.register(RegisterDto);   
       if (data==null) {
-        // Registration failed (email or phone already exists)
-        return { message: 'Error: Email or phone already exists!', status: 400 };
+        throw new HttpException( 'Correo o numero de telefono asignado a una cuenta',HttpStatus.NOT_ACCEPTABLE) 
       } else {
         // Registration succeeded
-        return { message: 'Email sent successfully :D', status: 200 };
+        return { message: 'Correo enviado exitosamente', status: 200 };
       }
     } catch (error ) {
-      // Handle any other errors that may occur during registration
-      return { message: `An error occurred during registration ${error}`, status: 500 };
+      throw error
     }
   }
   @Get('username/:id')
   GetUsername(@Param('id') id:string){
     return this.authService.getUsername(id)
+  }
+  @Get('total')
+  TotalUsers(){
+    return this.authService.GetTotalUsers()
   }
   @UseGuards(AuthGuard)
   @Get()
@@ -50,9 +52,8 @@ export class AuthController {
   }
   
   @Get('/confirm/:token')
-  confirm(@Res() res: Response,@Param('token') token:string){
-    this.authService.confirmEmail(token);
-    const redirectUrl = 'http://localhost:4200/SimplementeFlow/NewUser/Success'; // Replace with your desired URL
+  async confirm(@Res() res: Response,@Param('token') token:string){
+    const redirectUrl=await this.authService.confirmEmail(token);
     res.redirect(redirectUrl);
   }
   

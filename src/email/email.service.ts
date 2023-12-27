@@ -42,7 +42,7 @@ export class EmailService {
             await this.transporter.sendMail(mailoptions);
         } catch (error) {
             console.error("Error al enviar el correo electrónico:", error);
-            throw error; // Re-lanza el error para que pueda ser manejado en un nivel superior si es necesario
+            throw new  error; // Re-lanza el error para que pueda ser manejado en un nivel superior si es necesario
         }
             
     }
@@ -58,7 +58,7 @@ export class EmailService {
             await this.transporter.sendMail(mailoptions);
         }catch(error){
             console.error("Error al enviar el correo electrónico:", error);
-            throw error;
+            throw new (error);
         }
     }
 }

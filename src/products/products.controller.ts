@@ -18,7 +18,10 @@ export class ProductsController {
   TotalProducts():Promise<number>{
     return this.productsService.TotalProducts()
   }
-
+@Get('Stock')
+GetStock(){
+  return this.productsService.GetStock()
+}
   @Get()
   findAll(@Query('Category') category:string,@Query('limit') limit:string,@Query('skip') skip:string):Promise<Product[]> {
     const limitNumber = limit ? parseInt(limit, 10) : undefined;

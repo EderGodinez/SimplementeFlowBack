@@ -5,7 +5,7 @@ import { Address } from "./address.entity";
 export class User{
     _id?:string;
     @Prop({unique:true,required:true})
-    email:string;
+    email?:string;
     @Prop({required:true})
     names:string;
     @Prop({required:true})
@@ -20,7 +20,7 @@ export class User{
     password?:string;
     @Prop({default:true})
     isActive:boolean;
-    @Prop({default:'Client'})
+    @Prop({default:'User'})
     UserRole:string;
     @Prop({type:[String],default:[]})
     likes:string[];
@@ -28,5 +28,7 @@ export class User{
     shopping_car:string[];
     @Prop({default:{}})
     data_Address:Address
+    @Prop({type:Date,default:new Date()})
+    RegisterDate:Date
 }
 export const UserSchema = SchemaFactory.createForClass(User);

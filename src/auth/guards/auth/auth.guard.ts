@@ -17,15 +17,13 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(
-      token,{secret: process.env.JWT_SECRET});
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
-      const user=await this.AuthService.findUserById(payload.id._id)
-      if (!user) throw new UnauthorizedException('This user does not exist')
-      if (!user.isActive) throw new UnauthorizedException('This is not active')
+        token,{secret: process.env.JWT_SECRET});
+        const user=await this.AuthService.findUserById(payload.id._id)
+      if (!user) throw new UnauthorizedException('Usuario no existe')
+      if (!user.isActive) throw new UnauthorizedException('Usuario no activo')
       request['user'] = user;
     } catch {
-      throw new UnauthorizedException('invalid token');
+      throw new UnauthorizedException('Token invalido');
     }
 
     return Promise.resolve(true);
