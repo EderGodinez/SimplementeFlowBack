@@ -14,7 +14,6 @@ export class CreateUserDto {
     birthdate:Date;
     @IsIn(["Mujer","Hombre"], { message: 'Genero debe de ser "Hombre" o "Mujer"' })
     gender:string;
-    @MinLength(10)
     phone:number;
     @MinLength(10)
     password:string;

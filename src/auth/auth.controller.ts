@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request, Res, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
+import { UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
 import { LoginResponse } from './interfaces/login-response';
 import { User } from './entities/user.entity';
-import { AuthGuard } from './guards/auth/auth.guard';
+import { AuthGuard } from '../guards/auth/auth.guard';
 import { Response } from 'express';
+
 
 @Controller('users')
 export class AuthController {
@@ -56,11 +57,12 @@ export class AuthController {
     const redirectUrl=await this.authService.confirmEmail(token);
     res.redirect(redirectUrl);
   }
-  
+  @UseGuards(AuthGuard)
   @Post('/AddProduct')
   addProductAtCard(@Body() AddCard:userAddProduct){
     return this.authService.addProductAtCar(AddCard)
   }
+  @UseGuards(AuthGuard)
   @Post('/AddLike')
   addLikes(@Body() userAddLike:userAddLike){
     return this.authService.addLikes(userAddLike)
@@ -70,10 +72,10 @@ export class AuthController {
   findOne(@Param('id') id: string) {
     return this.authService.findOne(id);
   }
-
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() UpdateUserDto: UpdateUserDto) {
-    return this.authService.update(+id, UpdateUserDto);
+  async update(@Param('id') id: string, @Body() UpdateUserDto: UpdateUserDto) {
+    return this.authService.update(id, UpdateUserDto);
   }
 
   @Delete(':id')

@@ -1,7 +1,7 @@
 
 
 import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
-import { Injectable , InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Injectable , InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import mongoose, { Model } from 'mongoose';
@@ -13,6 +13,7 @@ import { EmailService } from 'src/email/email.service';
 import { tokenUser } from './interfaces/infoUser.interface';
 import { Product } from 'src/products/entities/product.entity';
 import { ConfigService } from '@nestjs/config';
+import { UserUpdated } from './interfaces/UserUpdated.interface';
 @Injectable()
 export class AuthService {
   
@@ -154,8 +155,20 @@ async findUserById(UserId:string){
     return this.UserModel.findById(id);
   }
 
-  update(id: number, UpdateUserDto: UpdateUserDto) {
-    return this.UserModel.findByIdAndUpdate(id,UpdateUserDto);
+ async update(id: string, UpdateUserDto: UpdateUserDto):Promise<UserUpdated> {
+  try {
+    const userUpdated = await this.UserModel.findOneAndUpdate(
+      { _id: id }, 
+      UpdateUserDto,
+      { new: true } // Opción para devolver el documento actualizado
+    ).lean();
+      const {password,...UserData}=userUpdated
+    return UserData
+  } catch (error) {
+    if( error.code === 11000 ) {
+      throw new BadRequestException(`Numero de telefono ${ UpdateUserDto.phone } ya esta vinculado a una cuenta`)
+    }
+  }  
   }
   remove(id: number) {
     return this.UserModel.findByIdAndDelete(id);
