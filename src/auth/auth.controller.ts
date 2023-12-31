@@ -5,6 +5,7 @@ import { LoginResponse } from './interfaces/login-response';
 import { User } from './entities/user.entity';
 import { AuthGuard } from '../guards/auth/auth.guard';
 import { Response } from 'express';
+import { ChangePasswordDto } from './dto/changePassword.dto';
 
 
 @Controller('users')
@@ -67,7 +68,11 @@ export class AuthController {
   addLikes(@Body() userAddLike:userAddLike){
     return this.authService.addLikes(userAddLike)
   }
-  
+  @UseGuards(AuthGuard)
+  @Patch('/ChangePass')
+  changePassword(@Body() info:ChangePasswordDto){
+    return this.authService.changePassword(info)
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.authService.findOne(id);
@@ -77,7 +82,6 @@ export class AuthController {
   async update(@Param('id') id: string, @Body() UpdateUserDto: UpdateUserDto) {
     return this.authService.update(id, UpdateUserDto);
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);

@@ -1,7 +1,7 @@
 
 
 import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
-import { BadRequestException, Injectable , InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Injectable , InternalServerErrorException, NotAcceptableException, UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import mongoose, { Model } from 'mongoose';
@@ -14,6 +14,7 @@ import { tokenUser } from './interfaces/infoUser.interface';
 import { Product } from 'src/products/entities/product.entity';
 import { ConfigService } from '@nestjs/config';
 import { UserUpdated } from './interfaces/UserUpdated.interface';
+import { ChangePasswordDto } from './dto/changePassword.dto';
 @Injectable()
 export class AuthService {
   
@@ -191,5 +192,28 @@ async findUserById(UserId:string){
   async GetTotalUsers(){
     const total=await this.UserModel.find().count().exec()
     return{TotalUsers:total}
+  }
+  async changePassword(Info:ChangePasswordDto){
+    const {email,newPassword,_password}=Info
+    try{
+      const user =await this.UserModel.findOne({email});
+      if (!user) {
+        throw new UnauthorizedException('No hay correo vinculado a cuenta')
+      }
+      if (!bcryptjs.compareSync(_password,user.password)) {
+        throw new UnauthorizedException('Contraseña incorrecta')
+      }
+      if (bcryptjs.compareSync(newPassword,user.password)) {
+        throw new NotAcceptableException('La contraseña nueva no puede ser igual a la actual')
+      }
+      const EncryptPass:string=bcryptjs.hashSync( newPassword, 10 )
+      const UserUpdated=await this.UserModel.findOneAndUpdate({email:email},{password:EncryptPass}).lean()
+      const{password,...rest}=UserUpdated
+      return rest
+    }
+    catch(error){
+      throw error 
+    }
+    
   }
 }
