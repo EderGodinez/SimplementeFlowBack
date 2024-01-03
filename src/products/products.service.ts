@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Query } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException, Query } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -49,8 +49,16 @@ export class ProductsService {
     return this.ProductsModel.find()
   }
 
-  findOne(id: number) {
-    return this.ProductsModel.findById(id);
+  async findOne(id: string) {
+    try {
+      const product=await this.ProductsModel.findById(id);
+      if(!product){
+        throw new NotFoundException('Producto no existe')
+      }
+      return product
+    } catch (error) {
+      throw error
+    }
   }
 
   async update(id: string, updateProductDto: UpdateProductDto):Promise<ProductUpdatedResponse>{
@@ -123,9 +131,9 @@ export class ProductsService {
   }
   GetProductSimilar(productsName:string,limit?:number):Promise<Product[]>{
     const productProperties:string[]=productsName.split(' ')
-    //Obtener los nombres de productos similares pero sin considerar el que pasamos
-    return this.ProductsModel.find({ProductName: {
-      $regex: `${productProperties[0]}`,
+    console.log(productProperties[0])
+    return this.ProductsModel.find({ ProductName: {
+      $regex: `${productProperties[1]}`,
       $options:'i' ,
       $ne: productsName} }).limit(limit).exec()
   }

@@ -50,13 +50,13 @@ GetStock(){
     return this.productsService.SearchProducts(query)
   }
   @Get('similar')
-  GetSimilarProducts(@Query('limit') limit:string,@Query('ProductName') productname:string){
+  GetSimilarProducts(@Query('ProductName') productname:string,@Query('limit') limit:string){
     const limitNumber = limit ? parseInt(limit, 10) : undefined;
     return this.productsService.GetProductSimilar(productname,limitNumber)
   }
   @Get(':id')
   findOne(@Param('id') id: string):Promise<Product> {
-    return this.productsService.findOne(+id);
+    return this.productsService.findOne(id);
   }
   
 

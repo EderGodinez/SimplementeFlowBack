@@ -8,7 +8,7 @@ import * as fs from 'fs'
 
 @Controller('files')
 export class FilesController {
-   private static allowedFileExtensions = ['.jpg', '.jpeg', '.png']; // Agrega las extensiones permitidas
+   private static allowedFileExtensions = ['.jpg', '.jpeg', '.png','.jfif']; // Agrega las extensiones permitidas
    private static maxFileSizeInBytes = 5 * 1024 * 1024; // 5 MB, ajusta este valor según tus necesidades
    private static filesName:string[]=[]
   @Post('upload')
