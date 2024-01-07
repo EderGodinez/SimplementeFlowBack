@@ -64,7 +64,7 @@ export class AuthController {
     return this.authService.addProductAtCar(AddCard)
   }
   @UseGuards(AuthGuard)
-  @Post('/AddLike')
+  @Post('/AddLikes')
   addLikes(@Body() userAddLike:userAddLike){
     return this.authService.addLikes(userAddLike)
   }

@@ -1,7 +1,7 @@
 
 
 import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
-import { BadRequestException, Injectable , InternalServerErrorException, NotAcceptableException, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable , InternalServerErrorException, NotAcceptableException, NotFoundException, NotImplementedException, UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import mongoose, { Model } from 'mongoose';
@@ -128,20 +128,32 @@ async addProductAtCar(userAddProduct:userAddProduct) :Promise<AddProductResponse
 
 }
 async addLikes(userAddLike:userAddLike) :Promise<AddProductResponse>{
-  const productInfo=await this.ProductModel.findById(userAddLike.productId)
   try{
-    const resp=await this.UserModel.findByIdAndUpdate(userAddLike.UserID, { $push: {likes: userAddLike.productId }},{ new: true })
-  }
-  catch(error){
+    const productInfo=await this.ProductModel.findById(userAddLike.productId)
+    if(!productInfo)
+    throw new NotFoundException('Producto no existe'),HttpStatus.NOT_FOUND
+  const user=await this.UserModel.findById(userAddLike.UserID)
+  if(!user)
+  throw new NotFoundException('Usuario no existe'),HttpStatus.NOT_FOUND
+  if(user.likes.includes(userAddLike.productId)){
+    const resp=await this.UserModel.findOneAndUpdate({_id:userAddLike.UserID}, { $pull: {likes:userAddLike.productId}},{new:true})  
     return{
-      message:`Error when trying to add product ${productInfo.ProductName} at wishlist`,
-      status:400
+      message:`Producto ${productInfo.ProductName} eliminado de favoritos`,
+      status:200
+    }
+   } 
+  const resp=await this.UserModel.findOneAndUpdate({_id:userAddLike.UserID}, { $push: {likes:userAddLike.productId}})
+  if (!resp)
+  throw new NotImplementedException('Error al intentar agregar producto '+productInfo.ProductName),HttpStatus.CONFLICT
+    return{
+      message:`Producto ${productInfo.ProductName} agregado a tu lista de favoritos`,
+      status:200
     }
   }
-  return{
-    message:`product ${productInfo.ProductName} added to your shopping car`,
-    status:200
+  catch(error){
+    throw error
   }
+  
 }
 async findUserById(UserId:string){
     const user=await this.UserModel.findById(UserId)
