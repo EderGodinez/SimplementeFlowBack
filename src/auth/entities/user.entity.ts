@@ -1,5 +1,6 @@
 import { Prop, SchemaFactory,Schema } from "@nestjs/mongoose";
 import { Address } from "./address.entity";
+import { shopping_car } from "./shoppingcar.entity";
 
 @Schema()
 export class User{
@@ -24,8 +25,8 @@ export class User{
     UserRole:string;
     @Prop({type:[String],default:[]})
     likes:string[];
-    @Prop({type:[String],default:[]})
-    shopping_car:string[];
+    @Prop({default:[]})
+    shopping_car:shopping_car[];
     @Prop({default:{}})
     data_Address:Address
     @Prop({type:Date,default:new Date()})

@@ -112,17 +112,58 @@ async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
 }
 async addProductAtCar(userAddProduct:userAddProduct) :Promise<AddProductResponse> {
   try{
-    const productInfo=await this.ProductModel.findById(userAddProduct.productId)
-    const resp=await this.UserModel.findByIdAndUpdate(userAddProduct.UserID, { $push: {shopping_car: userAddProduct.productId }},{ new: true })
+    const {ProductId,UserID,quantity,size}=userAddProduct
+    const productInfo=await this.ProductModel.findById(ProductId)
+    const User=await this.UserModel.findById(UserID)
+    ///Se busca la talla minima que en caso de no pasar una talla
+    let ProductSize=size
+    if (!size) {
+      const keymin=Object.keys(productInfo.sizes).filter(key => productInfo.sizes[key] > 0).map(Number);;
+      ProductSize=Math.min(...keymin);
+    }
+    const Exist=User.shopping_car.findIndex((shopping)=>shopping.ProductId===ProductId&&shopping.size===ProductSize)
+    if (Exist!=-1) {
+         // Luego, realiza otra actualización para incrementar la cantidad
+    const updatedUser = await this.UserModel.findOneAndUpdate(
+      { _id: User._id, 'shopping_car.ProductId': ProductId, 'shopping_car.size': ProductSize },
+      {
+        $inc: {
+          'shopping_car.$.quantity': quantity
+        }
+      },
+      { new: true }
+    );
+    }
+    else{
+      const resp = await this.UserModel.findByIdAndUpdate(
+        UserID,
+        {
+          $addToSet: {
+            shopping_car: {
+              $each: [
+                {
+                  ProductId: ProductId,
+                  size: ProductSize,
+                  quantity:quantity
+                }
+              ]
+            }
+          }
+        },
+        { new: true }
+      );
+      if (!resp) {
+        throw new NotFoundException('Error al intentar agregar producto a carrito'),HttpStatus.BAD_REQUEST
+      }
+    }
+    
+  
     return{
-      message:`product ${productInfo.ProductName} added to your shopping car`,
+      message:`Producto ${productInfo.ProductName} agregado a carrito`,
       status:200
     }
   }catch(error){
-    return{
-      message:`Error when trying to add product at shopping car`,
-      status:400
-    }
+    throw error
   }
   
 

@@ -131,7 +131,6 @@ export class ProductsService {
   }
   GetProductSimilar(productsName:string,limit?:number):Promise<Product[]>{
     const productProperties:string[]=productsName.split(' ')
-    console.log(productProperties[0])
     return this.ProductsModel.find({ ProductName: {
       $regex: `${productProperties[1]}`,
       $options:'i' ,
