@@ -37,7 +37,7 @@ export class OrdersService {
     
   }
   findOne(id: string):Promise<Order> {
-    return this.OrdersModel.findById(id);
+    return this.OrdersModel.findOne({numOrder:id});
   }
   remove(id: string) {
     return this.OrdersModel.findByIdAndDelete(id)
@@ -130,6 +130,7 @@ export class OrdersService {
         Size:item.Size
       };
     });
+    const NumOrder=await this.IncreaseId()+1
     const newOrder = new this.OrdersModel({
       numOrder:await this.IncreaseId()+1,
       UserId: customer.metadata.userId,
@@ -137,10 +138,11 @@ export class OrdersService {
       shipping: data.customer_details,
       TotalPay:data.amount_total/100,
       payment_status: data.payment_status,
+      OrderDate:new Date(),
+
     });
     try {
-      const savedOrder = await newOrder.save();
-
+      const savedOrder = await newOrder.save();///:DANGER
     const {_id,...rest}=savedOrder.toJSON()
     return {
       UserId:rest.UserId.toString(),
@@ -152,7 +154,8 @@ export class OrdersService {
       OrderDate:rest.OrderDate
     }
     } catch (err) {
-     throw new err
+      console.log(err)
+     throw err
     }
   }
   // Stripe webhoook encargado de validar el estado del checkout
@@ -182,7 +185,6 @@ export class OrdersService {
       }
       //Valida si el checkout tiene un estado de completado.
       if (eventType == "checkout.session.completed") {
-        
         this.stripe.customers
         .retrieve(data.customer)
         .then(async (customer) => {
@@ -194,6 +196,7 @@ export class OrdersService {
             //Se envia la informacion a correo capturado al momento de realizar el pago.
             this.EmailService.sendOrderInfo(orderinfo)
           } catch (err) {
+          console.log(err)
             throw new err;
           }
         })
@@ -450,8 +453,10 @@ userRegister.forEach((result) => {
 resultsMap.forEach((result, key) => {
   combinedResults.push({ month: parseInt(key), ...result });
 });
-
   return combinedResults[0]
+}
+getByUserId(UserId:string){
+return this.OrdersModel.find({UserId}).exec()
 }
 }
 

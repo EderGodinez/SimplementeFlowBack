@@ -18,7 +18,7 @@ export class Order {
     @Prop({type:Number})
     TotalPay: number;
     @Prop({ type: String,default:"Pendiente"})
-    delivery_status: 'Cancelado' | 'Pendiente'|"Entregado"
+    delivery_status?: 'Cancelado' | 'Pendiente'|"Entregado"
 }
 @Schema()
 export class OrderProduct {

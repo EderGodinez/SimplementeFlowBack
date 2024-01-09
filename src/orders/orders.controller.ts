@@ -1,5 +1,5 @@
 import { CheckoutResponse } from './interfaces/Checkout.response';
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -40,6 +40,10 @@ export class OrdersController {
     const {status}=body
     const numOrderInterger=parseInt(numOrder, 10)
   return this.ordersService.updateStatus(numOrderInterger,status)
+  }
+  @Get('User')
+  FindByUserId(@Query('UserId') UserId:string){
+    return this.ordersService.getByUserId(UserId)
   }
   @Get(':id')
   findOne(@Param('id') id: string){
