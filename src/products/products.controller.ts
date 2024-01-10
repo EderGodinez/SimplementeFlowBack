@@ -30,8 +30,19 @@ GetStock(){
     if (!category) {
       return this.productsService.findAll();
     }
+    switch(category){
+      case 'Ofertas':
+        return this.findOffers("","")
+        case 'Nuevos productos':
+        return this.findRecient("20","")
+        case "Niños":
+        case "Mujeres":
+        case "Hombres":
+          return this.productsService.findByCategory(category,limitNumber,skipNumber)
+      default:
+        return this.SearchProducts(category)
+    }
     //En caso de que si haya un filtro de por medio
-    return this.productsService.findByCategory(category,limitNumber,skipNumber)
   }
   @Get('newest')
   findRecient(@Query('limit') limit:string,@Query('skip') skip:string):Promise<Product[]>{

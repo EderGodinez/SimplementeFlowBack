@@ -1,3 +1,4 @@
+import { shopping_car } from './../auth/entities/shoppingcar.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 //Modulos
@@ -110,7 +111,7 @@ export class OrdersService {
       mode: "payment",
       customer: customer.id,
      //Url de redireccion en caso de que el pago sea aceptado con una respuesta de pago realizado
-     success_url: `http://localhost:4200/SimplementeFlow/Checkout/OrderSuccess`,
+     success_url: `http://localhost:4200/SimplementeFlow/Home`,
      //Url de redireccion en caso de que el pago sea rechazado 
      cancel_url: `http://localhost:4200/SimplementeFlow/Checkout`
     });
@@ -144,6 +145,8 @@ export class OrdersService {
     try {
       const savedOrder = await newOrder.save();///:DANGER
     const {_id,...rest}=savedOrder.toJSON()
+    //  Clear Shopping car
+    const clearCar=await this.UserModel.findOneAndUpdate({_id:rest.UserId}, {shopping_car:[]},{new:true})
     return {
       UserId:rest.UserId.toString(),
       numOrder:rest.numOrder,
@@ -195,6 +198,7 @@ export class OrdersService {
             this.updateStock(customer)
             //Se envia la informacion a correo capturado al momento de realizar el pago.
             this.EmailService.sendOrderInfo(orderinfo)
+            
           } catch (err) {
           console.log(err)
             throw new err;

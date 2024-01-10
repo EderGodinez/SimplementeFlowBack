@@ -29,7 +29,7 @@ Details.forEach(product => {
 <td align="left" style="padding:0;Margin:0;width:345px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-left:1px solid #386641;border-right:1px solid #386641;border-top:1px solid #386641;border-bottom:1px solid #386641;border-radius:10px">
 <tbody><tr>
-<td align="left" class="es-m-txt-c" style="Margin:0;padding-left:20px;padding-right:20px;padding-top:25px;padding-bottom:25px"><h3 class="p_name" style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:Bold;color:#000000">${product.productName}</h3><p class="p_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">DESCRIPTION:${product.productDescription}</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">SIZE: ${product.Size}</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">QTY:&nbsp;${product.Amount}</p><h3 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641" class="p_price">$${product.Price}</h3></td>
+<td align="left" class="es-m-txt-c" style="Margin:0;padding-left:20px;padding-right:20px;padding-top:25px;padding-bottom:25px"><h3 class="p_name" style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:Bold;color:#000000">${product.productName}</h3><p class="p_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Descripcion:${product.productDescription}</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Talla: ${product.Size}</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Cantidad:&nbsp;${product.Amount}</p><h3 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641" class="p_price">$${product.Price}</h3></td>
 </tr>
 </tbody></table></td>
 </tr>
@@ -105,14 +105,14 @@ mso-hide:all;
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="center" class="es-m-txt-c" style="padding:10px;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#ffffff">Hello ${firstname},</h3></td>
+<td align="center" class="es-m-txt-c" style="padding:10px;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#ffffff"Hola ${firstname},</h3></td>
 </tr>
 <tr>
-<td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:20px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#ffffff;font-size:16px">Thank you for your recent order. We are pleased to confirm that we have received your order and it is currently being processed.</p></td>
+<td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:20px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#ffffff;font-size:16px">Gracias por su reciente pedido. Nos complace confirmar que hemos recibido su pedido y que actualmente se está procesando.</p></td>
 </tr>
 <tr>
 <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:30px">
-    <span class="msohide es-button-border" style="border-style:solid;border-color:#ffffff;background:#ffffff;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="http://localhost:4200/SimplementeFlow" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#386641;font-size:16px;display:inline-block;background:#ffffff;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #ffffff">View Order</a></span><!--<![endif]--></td>
+    <span class="msohide es-button-border" style="border-style:solid;border-color:#ffffff;background:#ffffff;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="http://localhost:4200/SimplementeFlow/Orders/list/${numOrder}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#386641;font-size:16px;display:inline-block;background:#ffffff;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #ffffff">Ver detalles de orden</a></span><!--<![endif]--></td>
 </tr>
 </table></td>
 </tr>
@@ -132,10 +132,10 @@ mso-hide:all;
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="center" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:60px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:50px;font-style:normal;font-weight:normal;color:#040404">Order summary</h1></td>
+<td align="center" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:60px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:50px;font-style:normal;font-weight:normal;color:#040404">Resumen de pedido:</h1></td>
 </tr>
 <tr>
-<td align="center" class="es-m-p10t" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-top:40px"><h3 class="b_title" style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">ORDER NO.&nbsp;${numOrder}<br>${DateFormat}</h3></td>
+<td align="center" class="es-m-p10t" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-top:40px"><h3 class="b_title" style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">PEDIDO NO.&nbsp;${numOrder}<br>${DateFormat}</h3></td>
 </tr>
 </table></td>
 </tr>
@@ -149,7 +149,7 @@ ${Orderinfo}
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="center" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:60px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:50px;font-style:normal;font-weight:normal;color:#000000">Order total</h1></td>
+<td align="center" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:60px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:50px;font-style:normal;font-weight:normal;color:#000000">total</h1></td>
 </tr>
 </table></td>
 </tr>
@@ -165,7 +165,7 @@ ${Orderinfo}
 <td align="left" style="padding:0;Margin:0;width:270px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Subtotal<br>Discount<br>Shipping</p></td>
+<td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Subtotal<br>Descuento<br>Envio</p></td>
 </tr>
 </table></td>
 </tr>
@@ -240,7 +240,7 @@ ${Orderinfo}
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="center" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:60px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:50px;font-style:normal;font-weight:normal;color:#000000">Billing and shipping</h1></td>
+<td align="center" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:60px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:50px;font-style:normal;font-weight:normal;color:#000000">Facturacion y envio</h1></td>
 </tr>
 </table></td>
 </tr>
@@ -263,7 +263,7 @@ ${Orderinfo}
 <td align="left" style="padding:0;Margin:0;width:270px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">Shipping</h3><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">${username}<br>${userAddress.Street} ${userAddress.number},<br>${userAddress.Cologne},<br>${userAddress.City},${userAddress.State}</p></td>
+<td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">Direccion de envio</h3><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">${username}<br>${userAddress.Street} ${userAddress.number},<br>${userAddress.Cologne},<br>${userAddress.City},${userAddress.State}</p></td>
 </tr>
 </table></td>
 </tr>
@@ -276,7 +276,7 @@ ${Orderinfo}
 <td class="es-m-p20b" align="left" style="padding:0;Margin:0;width:270px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">Payment&nbsp;Method</h3><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Mastercard&nbsp;(••••••••••••••••)</p></td>
+<td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">Metodo de&nbsp;pago</h3><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Mastercard&nbsp;(••••••••••••••••)</p></td>
 </tr>
 </table></td>
 </tr>
@@ -286,7 +286,7 @@ ${Orderinfo}
 <td align="left" style="padding:0;Margin:0;width:270px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">Shipping Method</h3><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">FedEx Home Delivery</p></td>
+<td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Raleway, Arial, sans-serif;font-size:24px;font-style:normal;font-weight:normal;color:#386641">Metodo de envio</h3><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">FedEx Home Delivery</p></td>
 </tr>
 </table></td>
 </tr>
@@ -303,9 +303,9 @@ ${Orderinfo}
 <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="https://viewstripo.email"
 style="height:39px; v-text-anchor:middle; width:163px" arcsize="13%" strokecolor="#040e06" strokeweight="1px" fillcolor="#000000">
 <w:anchorlock></w:anchorlock>
-<center style='color:#ffffff; font-family:Raleway, Arial, sans-serif; font-size:14px; font-weight:400; line-height:14px; mso-text-raise:1px'>View Order</center>
+<center style='color:#ffffff; font-family:Raleway, Arial, sans-serif; font-size:14px; font-weight:400; line-height:14px; mso-text-raise:1px'>Ver pedido</center>
 </v:roundrect></a>
-<![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border" style="border-style:solid;border-color:#040e06;background:#000000;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="http://localhost:4200/SimplementeFlow" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;display:inline-block;background:#000000;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #000000">View Order</a></span><!--<![endif]--></td>
+<![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border" style="border-style:solid;border-color:#040e06;background:#000000;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="http://localhost:4200/SimplementeFlow/Orders/list/${numOrder}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;display:inline-block;background:#000000;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #000000">View Order</a></span><!--<![endif]--></td>
 </tr>
 </table></td>
 </tr>
@@ -378,7 +378,7 @@ style="height:39px; v-text-anchor:middle; width:163px" arcsize="13%" strokecolor
 <td align="left" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="left" style="padding:0;Margin:0"><p class="b_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Hello there!<br><br></p><p class="b_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Thank you for your recent order. We are pleased to confirm that we have received your order and it is currently being processed.<a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#6A994E;font-size:14px" href=""></a></p></td>
+<td align="left" style="padding:0;Margin:0"><p class="b_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Que tal<br><br></p><p class="b_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;line-height:24px;color:#4D4D4D;font-size:16px">Gracias por su reciente pedido. Nos complace confirmar que hemos recibido su pedido y que actualmente se está siendo procesando.<a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#6A994E;font-size:14px" href=""></a></p></td>
 </tr>
 </table></td>
 </tr>
