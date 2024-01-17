@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import {createOrderInfo} from './views/orderContent'
 import { OrderInfoResponse } from 'src/orders/interfaces/orderinfo.response';
 import { infoUser } from 'src/orders/interfaces/infoUser.interface';
@@ -55,10 +55,13 @@ export class EmailService {
             html:confirmEmail
         }
         try{
-            await this.transporter.sendMail(mailoptions);
+           const resp= await this.transporter.sendMail(mailoptions);
+           if (!resp) {
+            throw new NotFoundException('Correo proporcionado no existe'),HttpStatus.NOT_FOUND
+           }
         }catch(error){
             console.error("Error al enviar el correo electrónico:", error);
-            throw new (error);
+            throw new error;
         }
     }
 }

@@ -37,7 +37,8 @@ async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
   }
 }
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const { password, ...userData } = createUserDto;  
+      try {
+        const { password, ...userData } = createUserDto;  
       const newUser = new this.UserModel({
        password: bcryptjs.hashSync( password, 10 ),
        ...userData
@@ -53,11 +54,15 @@ async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
       const {email}=newUser;
       const token=this.getJWT({id:newUser})
       const UserInfo = new tokenUser(token,email); //Se crea un objeto para pasarlo a enviar el correo
-     await this.EmailService.sendUserConfirmation(UserInfo)//Se envia un correo de confirmacion.   
-       const { password:_, ...user } = newUser.toJSON();
-       const objectId =new mongoose.Types.ObjectId();
-       user._id=objectId.toString()
-       return user;
+        await this.EmailService.sendUserConfirmation(UserInfo)//Se envia un correo de confirmacion.   
+      const { password:_, ...user } = newUser.toJSON();
+        const objectId =new mongoose.Types.ObjectId();
+        user._id=objectId.toString()
+        return user;
+      } catch (error) {
+        throw error
+      }
+      
   }
   async confirmEmail(token:string) {
     try {
@@ -94,7 +99,7 @@ async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
       if (!user) {
         throw new UnauthorizedException('No hay correo vinculado a cuenta')
       }
-
+      
       if (!bcryptjs.compareSync(password,user.password)) {
         throw new UnauthorizedException('Contraseña incorrecta')
       }
