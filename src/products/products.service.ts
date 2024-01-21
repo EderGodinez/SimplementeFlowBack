@@ -107,17 +107,32 @@ export class ProductsService {
     }
 
   }
-  findByCategory(category:string,limit?:number,skip?:number):Promise<Product[]>{
-    return this.ProductsModel.find({'General.Category':[category,'Todos']}).skip(skip).limit(limit).exec();
+  async findByCategory(category:string,limit?:number,skip?:number):Promise<Product[]>{
+    const products=await this.ProductsModel.find({'General.Category':[category,'Todos']}).skip(skip).limit(limit).exec();
+    const Filterproducts=products.filter((product)=>{
+      const stock=Object.values(product.sizes).reduce((stock,totalStock)=>totalStock+stock,0)
+      return stock>0?true:false
+    })
+    return Filterproducts
   }
-  GetNewestProducts(limit?:number,skip?:number):Promise<Product[]>{
-    return this.ProductsModel.find().skip(skip).limit(limit).sort({RegisterDate:-1,inventoryStatus:1}).exec()
+  async GetNewestProducts(limit?:number,skip?:number):Promise<Product[]>{
+    const products=await this.ProductsModel.find().skip(skip).limit(limit).sort({RegisterDate:-1,inventoryStatus:1}).exec()
+    const Filterproducts=products.filter((product)=>{
+      const stock=Object.values(product.sizes).reduce((stock,totalStock)=>totalStock+stock,0)
+      return stock>0?true:false
+    })
+    return Filterproducts
   }
-  GetProductsOfferts(limit?:number,skip?:number):Promise<Product[]>{
-    return this.ProductsModel.find({Discount:{$gt:0}}).skip(skip).limit(limit)
+  async  GetProductsOfferts(limit?:number,skip?:number):Promise<Product[]>{
+    const products=await this.ProductsModel.find({Discount:{$gt:0}}).skip(skip).limit(limit)
+    const Filterproducts=products.filter((product)=>{
+      const stock=Object.values(product.sizes).reduce((stock,totalStock)=>totalStock+stock,0)
+      return stock>0?true:false
+    })
+    return Filterproducts
   }
-  SearchProducts(query:string):Promise<Product[]>{
-  return this.ProductsModel.find({
+  async SearchProducts(query:string):Promise<Product[]>{
+   const products=await this.ProductsModel.find({
     $or: [
       { ProductName: { $regex: new RegExp(query, 'i') } },
       { Description: { $regex: new RegExp(query, 'i') } },
@@ -125,6 +140,11 @@ export class ProductsService {
       {'General.model':{$regex: new RegExp(query, 'i')}},
       ]
   }).exec()
+  const Filterproducts=products.filter((product)=>{
+    const stock=Object.values(product.sizes).reduce((stock,totalStock)=>totalStock+stock,0)
+    return stock>0?true:false
+  })
+  return Filterproducts
   }
   TotalProducts():Promise<number>{
     return this.ProductsModel.find().countDocuments()

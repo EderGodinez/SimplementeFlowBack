@@ -1,6 +1,6 @@
 
 
-import {CreateUserDto,UpdateUserDto,LoginDto,RegisterDto,userAddLike,userAddProduct} from './dto/index'
+import {UpdateUserDto,LoginDto,RegisterUserDto,userAddLike,userAddProduct} from './dto/index'
 import { BadRequestException, HttpStatus, Injectable , InternalServerErrorException, NotAcceptableException, NotFoundException, NotImplementedException, UnauthorizedException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
@@ -26,7 +26,7 @@ export class AuthService {
               private EmailService:EmailService,
               private readonly configService: ConfigService) {}
    
-async register(RegisterDto:RegisterDto):Promise<LoginResponse>{  
+async register(RegisterDto:RegisterUserDto):Promise<LoginResponse>{  
   const user=await this.create(RegisterDto);
   if(!user.isActive){
     return null as LoginResponse
@@ -36,7 +36,7 @@ async register(RegisterDto:RegisterDto):Promise<LoginResponse>{
     token:this.getJWT({ id:user }),
   }
 }
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: RegisterUserDto): Promise<User> {
       try {
         const { password, ...userData } = createUserDto;  
       const newUser = new this.UserModel({

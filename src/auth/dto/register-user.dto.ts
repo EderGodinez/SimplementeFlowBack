@@ -1,7 +1,7 @@
 import { IsDateString, IsEmail, IsIn, IsOptional, IsString, Matches, MinLength } from "class-validator";
 
 
-export class RegisterDto {
+export class RegisterUserDto {
     @IsEmail()
     email:string;
     @IsString()
@@ -14,7 +14,6 @@ export class RegisterDto {
     birthdate:Date;
     @IsIn(["Mujer","Hombre","Otro"], { message: 'Genero debe de ser "Hombre" o "Mujer"' })
     gender:string;
-    @MinLength(10)
     phone:number;
     @MinLength(10)
     password:string;

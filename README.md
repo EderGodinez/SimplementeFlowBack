@@ -1,36 +1,57 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Project Description
+Development backend of web applications about a sneakers E-commerce
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
+## Technologies
+- NestJS as backend framework
+- MongoDB as a non-relational database
+- Firebase storage as images storage
+- Nodemailer as mail package
+- Stripe as payment service
+- Mongoose as MongoDB-ORM
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
 ## Installation
+One you have this repository you should execute the next command to install the necesary packages
 
 ```bash
 $ npm install
 ```
+------
+
+## Create your database
+  ## You should consider, this project is working with MongoDB database
+  ---
+
+## Environment variables 
+  ## Into env.template file
+  - The first thing is to rename this file to just '.env'
+  - Complete each of the variables with your data
+      - ### MONGO_URL
+          Once you have created your MongoDB database, copy the URL. I recommend saving your database user and the same way your password.
+
+      - ### JWT_SECRET
+          Here is easy, you need to write a complicated string as you wish the most complicated, most secure is your access token. I recommend using special characters like [!@#$%^&*()-{}+/~?><>], the same way use numbers and uppercase, lowercase characters.
+
+      - ### STRIPE_API_KEY
+          Go to the official Stripe website, you should create your account, once you have your own account sign in, and go to the API-key section and copy it.
+
+      - ### NODE_MAILER_USER and NODE_MAILER_PASS
+          In NODE_MAILER_USER just Select or create a new Google account to use. In NODE_MAILER_PASS once you have your account, go to the next link [applications pass](https://support.google.com/accounts/answer/185833?hl=en) and follow the steps.
+
+      - ### FIREBASE VARIABLES SETTINGS
+          Just follow the next video
+          - Spanish: [video](https://www.youtube.com/watch?v=gKYjOkUhO1E)
+          - English: [video](https://www.youtube.com/watch?v=-IFRVMEhZDc)
+          
+          Both of those videos, you should just copy the Firebase settings.
+
+---
+
+## Execute stripe service 
+  - Just follow the official Stripe instructions on their [Stripe page](https://dashboard.stripe.com/test/webhooks/create?endpoint_location=local).
 
 ## Running the app
 
@@ -58,16 +79,6 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Author - Eder Yair Godinez Salazar

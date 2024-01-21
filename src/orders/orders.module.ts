@@ -6,6 +6,8 @@ import { Order, OrderSchema } from './entities/order.entity';
 import { Product, ProductSchema } from 'src/products/entities/product.entity';
 import { EmailModule } from 'src/email/email.module';
 import { User, UserSchema } from 'src/auth/entities/user.entity';
+import { AuthService } from 'src/auth/auth.service';
+import { EmailService } from 'src/email/email.service';
 
 @Module({
   imports:[ MongooseModule.forFeature([
@@ -16,6 +18,6 @@ import { User, UserSchema } from 'src/auth/entities/user.entity';
   EmailModule
 ],
   controllers: [OrdersController],
-  providers: [OrdersService],
+  providers: [OrdersService,AuthService,EmailService],
 })
 export class OrdersModule {}
