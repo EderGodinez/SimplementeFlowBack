@@ -140,7 +140,6 @@ export class OrdersService {
    }
   //Crear una orden  en la base de ddatos
   async createOrder(customer, data):Promise<OrderInfoResponse>{
-    console.log(customer)
     const Items = JSON.parse(customer.metadata.cart);
     const products = Items.map((item) => {
       return {
