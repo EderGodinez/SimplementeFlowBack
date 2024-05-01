@@ -108,7 +108,7 @@ export class AuthService {
       //const result =await newUser.save();
       // Redirige al usuario a la URL de Facebook al finalizar el registro
 
-      return 'https://simplemente-flow.netlify.app/SimplementeFlow/NewUser/Success'; // Replace with your desired URL
+      return 'https://simplemente-flow.netlify.app/NewUser/Success'; // Replace with your desired URL
     } catch (error) {
       // Maneja el error si el token no es válido
       return 'https://simplemente-flow.netlify.app/Error';
