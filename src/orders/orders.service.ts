@@ -53,28 +53,46 @@ export class OrdersService {
     }
   }
    async createCheckoutSession(CreateOrderDto:CreateOrderDto){
+    const arrayIds=CreateOrderDto.Details.map((car)=>car.ProductId)
+     const InfoProducts=await this.ProductModel.find({ _id: { $in: arrayIds } })
+    // productDescription: string;
+    // productName: string;
+    // Image: string;
+    // Size: number;
+    // Amount: number;
+    // Price: number;
+    const details:any=CreateOrderDto.Details.map((product,index)=>{
+      return{
+        productDestription:InfoProducts[index].description,
+        productName:InfoProducts[index].ProductName,
+        Image:InfoProducts[index].images[0],
+        Size:product.size,
+        Amount:product.quantity,
+        Price:InfoProducts[index].price*((100-InfoProducts[index].Discount)/100)
+      }
+    })
     const customer = await this.stripe.customers.create({
       metadata: {
         userId: CreateOrderDto.UserId,
-        cart: JSON.stringify(CreateOrderDto.Details),
+        cart: JSON.stringify(details),
       },
     });
     //Se crea el listado de los productos para el checkout sesion
-    const line_items = CreateOrderDto.Details.map((item) => {
+    const line_items = InfoProducts.map((item,index) => {
       return {
         price_data: {
           currency: "mxn",
           product_data: {
-            name: item.productName,
-            images: [item.Image],
-            description: item.productDescription,
+            name: item.ProductName,
+            images: [item.images[0]],
+            description: item.description,
             metadata: {
-              size: item.Size, // Asume que `size` es la propiedad que contiene el numero de calzado
+              size: CreateOrderDto.Details[index].size, // Asume que `size` es la propiedad que contiene el numero de calzado
             },
           },
-          unit_amount: Math.round(item.Price * 100),
+          unit_amount: Math.round(item.price*((100-item.Discount)/100) * 100),
         },
-        quantity: item.Amount,
+        quantity: CreateOrderDto.Details[index].quantity,
       };
     });
   //Se crea el checkout sesion
@@ -122,6 +140,7 @@ export class OrdersService {
    }
   //Crear una orden  en la base de ddatos
   async createOrder(customer, data):Promise<OrderInfoResponse>{
+    console.log(customer)
     const Items = JSON.parse(customer.metadata.cart);
     const products = Items.map((item) => {
       return {

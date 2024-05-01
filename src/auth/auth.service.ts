@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // eslint-disable-next-line prettier/prettier
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
@@ -18,6 +19,12 @@ import {
   NotImplementedException,
   UnauthorizedException,
 } from '@nestjs/common';
+=======
+
+
+import {UpdateUserDto,LoginDto,RegisterUserDto,userAddLike,userAddProduct} from './dto/index'
+import { BadRequestException, HttpStatus, Injectable , InternalServerErrorException, NotAcceptableException, NotFoundException, NotImplementedException, UnauthorizedException} from '@nestjs/common';
+>>>>>>> fe870bf2f0d9bc54a9f521f9d4e36605589dcc43
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import mongoose, { Model } from 'mongoose';
@@ -33,6 +40,7 @@ import { UserUpdated } from './interfaces/UserUpdated.interface';
 import { ChangePasswordDto } from './dto/changePassword.dto';
 @Injectable()
 export class AuthService {
+<<<<<<< HEAD
   constructor(
     @InjectModel(User.name)
     private UserModel: Model<User>,
@@ -56,6 +64,30 @@ export class AuthService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       const { password, ...userData } = createUserDto;
+=======
+  
+  constructor(@InjectModel(User.name) 
+              private UserModel: Model<User>,
+              @InjectModel(Product.name) 
+              private ProductModel: Model<Product>,
+              private JwtService:JwtService,
+              private EmailService:EmailService,
+              private readonly configService: ConfigService) {}
+   
+async register(RegisterDto:RegisterUserDto):Promise<LoginResponse>{  
+  const user=await this.create(RegisterDto);
+  if(!user.isActive){
+    return null as LoginResponse
+  }
+  return{
+    User:user,
+    token:this.getJWT({ id:user }),
+  }
+}
+  async create(createUserDto: RegisterUserDto): Promise<User> {
+      try {
+        const { password, ...userData } = createUserDto;  
+>>>>>>> fe870bf2f0d9bc54a9f521f9d4e36605589dcc43
       const newUser = new this.UserModel({
         password: bcryptjs.hashSync(password, 10),
         ...userData,

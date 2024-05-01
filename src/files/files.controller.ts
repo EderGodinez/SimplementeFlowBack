@@ -1,16 +1,20 @@
-import { Controller, Get, Post , Param, UseInterceptors, Res, UploadedFiles, Delete } from '@nestjs/common';
+import { Controller, Get, Post , Param, UseInterceptors, Res, UploadedFiles, Delete, UseGuards } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { v4 as uuidv4 } from 'uuid';
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { FirebaseStorageService } from './files.service';
 import { extname } from 'path';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AdminGuard } from 'src/guards/admin/admin.guard';
 
+@ApiTags('files')
 @Controller('files')
 export class FilesController {
   constructor(private readonly firebaseStorageService: FirebaseStorageService) {}
   private static allowedFileExtensions = ['.jpg', '.jpeg', '.png','.jfif']; // Agrega las extensiones permitidas
-  private static maxFileSizeInBytes = 5 * 1024 * 1024; // 5 MB, ajusta este valor según tus necesidades
-  private static filesName:string[]=[]
+  private static maxFileSizeInBytes = 10 * 1024 * 1024; // 5 MB, ajusta este valor según tus necesidades
+  @ApiOperation({description:'Permite subir un archivo a servicio de firebase storage - se requiere token de administrador',summary:'Subir un arcivo de imagen a servidor'})
+  @UseGuards(AdminGuard)
   @Post('/upload')
   @UseInterceptors(FilesInterceptor('files', 5, {
     fileFilter: (req, file, cb) => {
@@ -43,6 +47,10 @@ export class FilesController {
       throw new Error(`Error uploading file: ${error.message}`);
     }
   }
+  @ApiOperation({
+    description:'Permite eliminar un archivo a servicio de firebase storage - se requiere token de administrador',
+    summary:'Eliminar un arcivo de imagen a servidor firebase'})
+  @UseGuards(AdminGuard)
   @Delete('/:imageName')
   async deleteImage(@Param('imageName') imageName: string) {
     try {

@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Message } from './entities/message.entity';
 import { Model } from 'mongoose';
 import { TotalMessages } from './interfaces/TotalMessages.response';
+import { UpdateMessage } from './dto/UpdateMessage.dto';
 
 @Injectable()
 export class MessagesService {
@@ -61,7 +62,7 @@ export class MessagesService {
   findOne(id: string) {
     return this.MessageModel.findOne({_id:id});
   }
-   updateMessage(id:string,Message:Message){
+   updateMessage(id:string,Message:UpdateMessage){
     return this.MessageModel.findByIdAndUpdate(id,Message)
   }
   remove(id: string) {
