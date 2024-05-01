@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 
 let Orderinfo=''
@@ -112,7 +113,7 @@ mso-hide:all;
 </tr>
 <tr>
 <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:30px">
-    <span class="msohide es-button-border" style="border-style:solid;border-color:#ffffff;background:#ffffff;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="http://localhost:4200/SimplementeFlow/Orders/list/${numOrder}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#386641;font-size:16px;display:inline-block;background:#ffffff;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #ffffff">Ver detalles de orden</a></span><!--<![endif]--></td>
+    <span class="msohide es-button-border" style="border-style:solid;border-color:#ffffff;background:#ffffff;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="https://simplemente-flow.netlify.app/SimplementeFlow/Orders/list/${numOrder}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#386641;font-size:16px;display:inline-block;background:#ffffff;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #ffffff">Ver detalles de orden</a></span><!--<![endif]--></td>
 </tr>
 </table></td>
 </tr>
@@ -305,7 +306,7 @@ style="height:39px; v-text-anchor:middle; width:163px" arcsize="13%" strokecolor
 <w:anchorlock></w:anchorlock>
 <center style='color:#ffffff; font-family:Raleway, Arial, sans-serif; font-size:14px; font-weight:400; line-height:14px; mso-text-raise:1px'>Ver pedido</center>
 </v:roundrect></a>
-<![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border" style="border-style:solid;border-color:#040e06;background:#000000;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="http://localhost:4200/SimplementeFlow/Orders/list/${numOrder}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;display:inline-block;background:#000000;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #000000">View Order</a></span><!--<![endif]--></td>
+<![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border" style="border-style:solid;border-color:#040e06;background:#000000;border-width:1px;display:inline-block;border-radius:5px;width:auto;mso-hide:all"><a href="https://simplemente-flow.netlify.app/SimplementeFlow/Orders/list/${numOrder}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:16px;display:inline-block;background:#000000;border-radius:5px;font-family:Raleway, Arial, sans-serif;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center;padding:10px 30px 10px 30px;mso-padding-alt:0;mso-border-alt:10px solid #000000">View Order</a></span><!--<![endif]--></td>
 </tr>
 </table></td>
 </tr>

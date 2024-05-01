@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { CheckoutResponse } from './interfaces/Checkout.response';
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';

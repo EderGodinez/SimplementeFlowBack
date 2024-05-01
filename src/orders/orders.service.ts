@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { shopping_car } from './../auth/entities/shoppingcar.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
@@ -111,9 +113,9 @@ export class OrdersService {
       mode: "payment",
       customer: customer.id,
      //Url de redireccion en caso de que el pago sea aceptado con una respuesta de pago realizado
-     success_url: `http://localhost:4200/SimplementeFlow/Home`,
+     success_url: `https://simplemente-flow.netlify.app/SimplementeFlow/Home`,
      //Url de redireccion en caso de que el pago sea rechazado 
-     cancel_url: `http://localhost:4200/SimplementeFlow/Checkout`
+     cancel_url: `https://simplemente-flow.netlify.app/SimplementeFlow/Checkout`
     });
     //Retorna URL en la cual el usuario ingresara sus datos bancarios
     return{ url: session.url };
@@ -169,7 +171,7 @@ export class OrdersService {
     //Si existe un webhook en linea 
     if (webhookSecret) {
       let event;
-      let signature = body.headers["stripe-signature"];
+      const signature = body.headers["stripe-signature"];
       try {
         event = this.stripe.webhooks.constructEvent(
           body,
