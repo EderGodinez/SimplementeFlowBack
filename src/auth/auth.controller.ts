@@ -1,13 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request, Res, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-<<<<<<< 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UpdateUserDto,LoginDto,RegisterUserDto,userAddLike,userAddProduct} from './dto/index'
-=======
-import { UpdateUserDto,LoginDto,RegisterUserDto,userAddLike,userAddProduct} from './dto/index'
->>>>>>> fe870bf2f0d9bc54a9f521f9d4e36605589dcc43
 
 import { LoginResponse } from './interfaces/login-response';
 import { User } from './entities/user.entity';
