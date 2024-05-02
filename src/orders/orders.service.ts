@@ -132,10 +132,11 @@ export class OrdersService {
   async createOrder(customer, data):Promise<OrderInfoResponse>{
     const Items = JSON.parse(customer.metadata.cart);
     const arrayNames=Items.map((car)=>car.productName)
-    const ProductsImages=await this.ProductModel.find({ ProductName: { $in: arrayNames } }).select('images');
+    const ProductsImages=await this.ProductModel.find({ ProductName: { $in: arrayNames } }).select('images description');
     const products = Items.map((item,index) => {
       return {
         productName:item.productName ,
+        productDescription:ProductsImages[index].description,
         Image:ProductsImages[index].images[0],
         Amount: item.Amount,
         Price:item.Price,
@@ -167,7 +168,7 @@ export class OrdersService {
       OrderDate:rest.OrderDate
     }
     } catch (err) {
-      console.log(err)
+      console.error(err)
      throw err
     }
   }
@@ -211,11 +212,11 @@ export class OrdersService {
             this.EmailService.sendOrderInfo(orderinfo)
             
           } catch (err) {
-          console.log(err)
+          console.error(err)
             throw new err;
           }
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.error(err.message));
     }
 }
 updateStock(customer){
