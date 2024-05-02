@@ -208,7 +208,6 @@ export class OrdersService {
             //Actualizar stock de los productos ordenados
             this.updateStock(customer)
             //Se envia la informacion a correo capturado al momento de realizar el pago.
-            console.log(orderinfo)
             this.EmailService.sendOrderInfo(orderinfo)
             
           } catch (err) {
