@@ -133,7 +133,7 @@ export class OrdersService {
     const Items = JSON.parse(customer.metadata.cart);
     const arrayNames=Items.map((car)=>car.productName)
     console.log(arrayNames)
-    const ProductsImages=await this.ProductModel.find({ _id: { $in: arrayNames } }).select('images');
+    const ProductsImages=await this.ProductModel.find({ ProductName: { $in: arrayNames } }).select('images');
     const products = Items.map((item,index) => {
       return {
         productName:item.productName ,
