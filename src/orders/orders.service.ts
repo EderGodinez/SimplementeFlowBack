@@ -133,8 +133,6 @@ export class OrdersService {
     const Items = JSON.parse(customer.metadata.cart);
     const arrayNames=Items.map((car)=>car.productName)
     const ProductsImages=await this.ProductModel.find({ ProductName: { $in: arrayNames } }).select('images');
-    console.log(arrayNames)
-    console.log(ProductsImages)
     const products = Items.map((item,index) => {
       return {
         productName:item.productName ,
@@ -144,7 +142,6 @@ export class OrdersService {
         Size:item.Size
       };
     });
-    const NumOrder=await this.IncreaseId()+1
     const newOrder = new this.OrdersModel({
       numOrder:await this.IncreaseId()+1,
       UserId: customer.metadata.userId,
@@ -210,6 +207,7 @@ export class OrdersService {
             //Actualizar stock de los productos ordenados
             this.updateStock(customer)
             //Se envia la informacion a correo capturado al momento de realizar el pago.
+            console.log(orderinfo)
             this.EmailService.sendOrderInfo(orderinfo)
             
           } catch (err) {
