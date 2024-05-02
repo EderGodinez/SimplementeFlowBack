@@ -55,17 +55,9 @@ export class OrdersService {
    async createCheckoutSession(CreateOrderDto:CreateOrderDto){
     const arrayIds=CreateOrderDto.Details.map((car)=>car.ProductId)
      const InfoProducts=await this.ProductModel.find({ _id: { $in: arrayIds } })
-    // productDescription: string;
-    // productName: string;
-    // Image: string;
-    // Size: number;
-    // Amount: number;
-    // Price: number;
     const details:any=CreateOrderDto.Details.map((product,index)=>{
       return{
-        productDestription:InfoProducts[index].description,
         productName:InfoProducts[index].ProductName,
-        Image:InfoProducts[index].images[0],
         Size:product.size,
         Amount:product.quantity,
         Price:InfoProducts[index].price*((100-InfoProducts[index].Discount)/100)
@@ -84,8 +76,6 @@ export class OrdersService {
           currency: "mxn",
           product_data: {
             name: item.ProductName,
-            images: [item.images[0]],
-            description: item.description,
             metadata: {
               size: CreateOrderDto.Details[index].size, // Asume que `size` es la propiedad que contiene el numero de calzado
             },
@@ -148,7 +138,7 @@ export class OrdersService {
     const products = Items.map((item,index) => {
       return {
         productName:item.productName ,
-        Image:ProductsImages[index][0],
+        Image:ProductsImages[index].images[0],
         Amount: item.Amount,
         Price:item.Price,
         Size:item.Size
