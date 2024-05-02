@@ -131,9 +131,9 @@ export class OrdersService {
   //Crear una orden  en la base de ddatos
   async createOrder(customer, data):Promise<OrderInfoResponse>{
     const Items = JSON.parse(customer.metadata.cart);
-    const arrayIds=Items.map((car)=>car.ProductId)
-    console.log(arrayIds)
-    const ProductsImages=await this.ProductModel.find({ _id: { $in: arrayIds } }).select('images');
+    const arrayNames=Items.map((car)=>car.productName)
+    console.log(arrayNames)
+    const ProductsImages=await this.ProductModel.find({ _id: { $in: arrayNames } }).select('images');
     const products = Items.map((item,index) => {
       return {
         productName:item.productName ,
