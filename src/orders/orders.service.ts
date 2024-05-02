@@ -55,9 +55,17 @@ export class OrdersService {
    async createCheckoutSession(CreateOrderDto:CreateOrderDto){
     const arrayIds=CreateOrderDto.Details.map((car)=>car.ProductId)
      const InfoProducts=await this.ProductModel.find({ _id: { $in: arrayIds } })
+    // productDescription: string;
+    // productName: string;
+    // Image: string;
+    // Size: number;
+    // Amount: number;
+    // Price: number;
     const details:any=CreateOrderDto.Details.map((product,index)=>{
       return{
+        productDestription:InfoProducts[index].description,
         productName:InfoProducts[index].ProductName,
+        Image:InfoProducts[index].images[0],
         Size:product.size,
         Amount:product.quantity,
         Price:InfoProducts[index].price*((100-InfoProducts[index].Discount)/100)
@@ -76,6 +84,8 @@ export class OrdersService {
           currency: "mxn",
           product_data: {
             name: item.ProductName,
+            images: [item.images[0]],
+            description: item.description,
             metadata: {
               size: CreateOrderDto.Details[index].size, // Asume que `size` es la propiedad que contiene el numero de calzado
             },
@@ -131,13 +141,11 @@ export class OrdersService {
   //Crear una orden  en la base de ddatos
   async createOrder(customer, data):Promise<OrderInfoResponse>{
     const Items = JSON.parse(customer.metadata.cart);
-    const arrayIds=Items.map((car)=>car.ProductId)
-    console.log(arrayIds)
-    const ProductsImages=await this.ProductModel.find({ _id: { $in: arrayIds } }).select('images');
-    const products = Items.map((item,index) => {
+    const products = Items.map((item) => {
       return {
         productName:item.productName ,
-        Image:ProductsImages[index][0],
+        productDescription:item.productDescription ,
+        Image:item.Image,
         Amount: item.Amount,
         Price:item.Price,
         Size:item.Size

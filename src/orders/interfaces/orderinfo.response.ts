@@ -10,6 +10,7 @@ export interface OrderInfoResponse{
 
 export interface Detail {
   productName:        string;
+  productDescription: string;
   Image:              string;
   Amount:             number;
   Price:              number;
